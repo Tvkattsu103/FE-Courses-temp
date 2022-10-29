@@ -27,7 +27,7 @@ function PostDetail(props) {
     const [post, setPost] = useState();
     const [title, setTitle] = useState();
     const [category, setCategory] = useState();
-    const [status, setStatus] = useState();
+    const [status, setStatus] = useState(0);
     const [author, setAuthor] = useState();
     const [content, setContent] = useState();
     const [thumbnailUrl, setThumbnailUrl] = useState();
@@ -43,8 +43,8 @@ function PostDetail(props) {
     const img = "https://i.fbcd.co/products/resized/resized-750-500/563d0201e4359c2e890569e254ea14790eb370b71d08b6de5052511cc0352313.jpg";
 
     const getPostById = async () => {
-        const response = await adminApi.getAllPost();
-        setPost(response?.filter((item) => item?.id === id)[0]);
+        const response = await adminApi.getPostById(id);
+        setPost(response);
     };
 
     const handleUpdatePost = async (e) => {
@@ -58,10 +58,10 @@ function PostDetail(props) {
                 authorId: JSON.parse(Cookies.get("user")).id,
                 body: content
             };
-
+            console.log(thumbnailUrl);
             const response =
                 type === 1
-                    ? await adminApi.updatePost(params, id)
+                    ? await adminApi.updatePost(id, params, thumbnailUrl)
                     : await adminApi.createPost(params, thumbnailUrl);
             // setHasUpdate(!hasUpdate);
             toast.success(response?.message, {
@@ -81,8 +81,10 @@ function PostDetail(props) {
     }
 
     useEffect(() => {
-        getPostById();
-    }, [hasUpdate]);
+        if(type === 1){
+            getPostById();
+        }
+    }, []);
 
     const optionStatus = [
         { status: 0, label: "Draft" },
@@ -139,6 +141,7 @@ function PostDetail(props) {
                                             <CFormSelect
                                                 id="autoSizingSelect"
                                                 onChange={(e) => setStatus(e.target.value)}
+                                                disabled={type !== 1}
                                             >
                                                 {optionStatus?.map((item, index) => {
                                                     if (type === 1) {

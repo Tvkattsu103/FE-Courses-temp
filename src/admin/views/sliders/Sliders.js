@@ -10,6 +10,8 @@ import { adminApi } from "../../../api/adminApi";
 import Styles from "./style.module.scss";
 import toast, { Toaster } from "react-hot-toast";
 import DataTable from "react-data-table-component";
+import CIcon from '@coreui/icons-react';
+import { cilPen } from "@coreui/icons";
 
 const Sliders = () => {
     const [listSlider, setListSlider] = useState([]);
@@ -27,7 +29,6 @@ const Sliders = () => {
         },
         {
             name: "ImageUrl",
-            maxWidth: '150px',
             selector: (row) => (
                 <img
                     src={row?.imageUrl}
@@ -39,7 +40,8 @@ const Sliders = () => {
         },
         {
             name: "Valid To",
-            selector: (row) => row?.validTo,
+            maxWidth: '160px',
+            selector: (row) => row?.validTo.substring(0,10),
             sortable: true,
         },
         {
@@ -47,7 +49,7 @@ const Sliders = () => {
             maxWidth: '160px',
             selector: (row) => (
                 <>
-                    <div className={` ${row?.status !== 2 ? Styles.active : Styles.inactive}`} style={{ textAlign: 'center' }}>
+                    <div className={` ${row?.status !== 2 ? Styles.active : Styles.inactive}`} style={{ textAlign: 'center', width: '100px' }}>
                         {(() => {
                             if (row?.status === 0) {
                                 return (<>Draft</>)
@@ -74,7 +76,7 @@ const Sliders = () => {
                             className="mb-2"
                             href={`/react/admin/sliders/${row?.id}`} color="primary"
                         >
-                            Edit
+                            <CIcon icon={cilPen}/>
                         </CButton>)
                     })()}
 
@@ -116,7 +118,7 @@ const Sliders = () => {
                 status: statusChange,
             };
 
-            const response = await adminApi.updateSlider(params, id);
+            const response = await adminApi.updateSlider(id, null, params);
             setIsModify(!isModify);
             toast.success(response?.message, {
                 duration: 2000,
@@ -132,7 +134,6 @@ const Sliders = () => {
         try {
             const response = await adminApi.getAllSlider(status, validTo);
             setListSlider(response);
-            console.log(response);
         } catch (responseError) {
             console.log("error:", responseError);
         }

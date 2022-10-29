@@ -89,7 +89,7 @@ function ClassDetail(props) {
         if (role === "ROLE_ADMIN" || role === "ROLE_MANAGER") getListTrainer();
     }, []);
 
-    useEffect(() => {}, [dateFrom, dateTo]);
+    useEffect(() => { }, [dateFrom, dateTo]);
 
     const optionStatus = [
         { status: false, label: "Inactive" },
@@ -141,12 +141,9 @@ function ClassDetail(props) {
                                         id="exampleFormControlInput1"
                                         disabled={isNotAdmin}
                                         placeholder=""
-                                        value={
-                                            type === 1
-                                                ? new Date(
-                                                      dateFrom
-                                                  ).toLocaleDateString("en-CA")
-                                                : ""
+                                        value={new Date(
+                                            dateFrom
+                                        ).toLocaleDateString("en-CA")
                                         }
                                         onChange={(e) =>
                                             setDateFrom(
@@ -168,8 +165,8 @@ function ClassDetail(props) {
                                         value={
                                             type === 1
                                                 ? new Date(
-                                                      dateTo
-                                                  ).toLocaleDateString("en-CA")
+                                                    dateTo
+                                                ).toLocaleDateString("en-CA")
                                                 : ""
                                         }
                                         onChange={(e) =>

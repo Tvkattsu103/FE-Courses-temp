@@ -13,7 +13,7 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import { userApi } from "../../../api/userApi";
 import {
@@ -27,14 +27,12 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function SliderDetail(props) {
     const [slider, setSlider] = useState();
-    const [validTo, setValidTo] = useState(0);
-    const [status, setStatus] = useState(1);
-    const [hasUpdate, setHasUpdate] = useState(false);
-    const [startDate, setStartDate] = useState(new Date());
-    const [dateTo, setDateTo] = useState();
+    const [validTo, setValidTo] = useState();
+    const [status, setStatus] = useState(0);
     const [preview, setPreview] = useState();
     const [image, setImage] = useState();
     const location = useLocation();
+    const history = useHistory();
     const id = location.pathname.substring(
         "/admin/sliders/".length,
         location.pathname.length
@@ -43,26 +41,27 @@ function SliderDetail(props) {
     const img = "https://i.fbcd.co/products/resized/resized-750-500/563d0201e4359c2e890569e254ea14790eb370b71d08b6de5052511cc0352313.jpg";
 
     const getSliderById = async () => {
-        // const response = await adminApi.getAllSlider();
-        // setSlider(response?.filter((item) => item?.id == id)[0]);
+        const response = await adminApi.getSliderById(id);
+        response.validTo = new Date(response.validTo.substring(0,10));
+        setSlider(response);
+        console.log(response)
     };
 
     const handleUpdateSlider = async () => {
         try {
             const params = {
-                image: image,
                 validTo: validTo,
                 status: status,
             };
-            console.log(id, type);
+            console.log(image, params);
             const response =
                 type === 1
-                    ? await adminApi.updateSlider(params, id)
-                    : await adminApi.createSlider(image, validTo, status);
-            setHasUpdate(!hasUpdate);
+                    ? await adminApi.updateSlider(id, image, params)
+                    : await adminApi.createSlider(image, params);
             toast.success(response?.message, {
                 duration: 2000,
             });
+            history.push("/admin/sliders");
         } catch (responseError) {
             toast.error(responseError, {
                 duration: 2000,
@@ -78,8 +77,10 @@ function SliderDetail(props) {
     }
 
     useEffect(() => {
-        getSliderById();
-    }, [hasUpdate]);
+        if (type === 1) {
+            getSliderById();
+        }
+    }, []);
 
     return (
         <div>
@@ -103,7 +104,7 @@ function SliderDetail(props) {
                                     <CImage
                                         rounded
                                         thumbnail
-                                        src={!preview ? slider?.thumnailUrl ? slider?.thumnailUrl : img : preview}
+                                        src={!preview ? slider?.imageUrl ? slider?.imageUrl : img : preview}
                                         width={1200}
                                         style={{ maxHeight: '450px', display: 'block', margin: 'auto' }}
                                         onLoad={() => URL.revokeObjectURL(preview)}
@@ -121,7 +122,28 @@ function SliderDetail(props) {
                                             <CFormLabel htmlFor="exampleFormControlInput1">
                                                 Valid To
                                             </CFormLabel>
-                                            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+                                            {/* <DatePicker selected={validTo} onChange={(date) => setValidTo(new Date(date))} /> */}
+                                            <CFormInput
+                                                type="date"
+                                                id="exampleFormControlInput1"
+                                                placeholder=""
+                                                value={!validTo ? slider?.validTo
+                                                    ? new Date(
+                                                        slider?.validTo
+                                                    ).toLocaleDateString("en-CA")
+                                                    : new Date(
+                                                        validTo
+                                                    ).toLocaleDateString("en-CA")
+                                                    : new Date(
+                                                        validTo
+                                                    ).toLocaleDateString("en-CA")
+                                                }
+                                                onChange={(e) =>
+                                                    setValidTo(
+                                                        new Date(e.target.value)
+                                                    )
+                                                }
+                                            />
                                         </div>
                                     </CCol>
                                     <CCol sm={4} className="offset-sm-4">
@@ -132,6 +154,7 @@ function SliderDetail(props) {
                                             <CFormSelect
                                                 id="autoSizingSelect"
                                                 onChange={(e) => setStatus(e.target.value)}
+                                                disabled={type !== 1}
                                             >
                                                 <option value="0">Draft</option>
                                                 <option value="1">Published</option>

@@ -16,6 +16,7 @@ import blogPic3 from '../../images/blog/latest-blog/pic3.jpg';
 import { CCard, CRow, CCol, CCardImage, CCardBody, CCardTitle, CCardText } from '@coreui/react';
 import { CButton } from '@coreui/react';
 import { userApi } from './../../api/userApi';
+import ReactHtmlParser from 'react-html-parser'
 
 const content = [
 	{
@@ -127,12 +128,12 @@ const BlogClassicSidebar = () => {
 													<CCardTitle><Link to={`/blog/${item?.id}`}>{item?.title}</Link></CCardTitle>
 													<CCardText>
 														<ul className="media-post">
-															<li><i className="fa fa-calendar"></i>{item?.createDate.substring(0,11)}</li>
-															<li><i className="fa fa-user"></i>By {item?.author.fullname}</li>
+															<li><i className="fa fa-calendar"></i>{" "+item?.createDate.substring(0,11)}</li>
+															<li><i className="fa fa-user"></i> By {item?.author.fullname}</li>
 														</ul>
 													</CCardText>
 													<CCardText>
-														{item?.body}
+														{ReactHtmlParser(item?.body)}
 													</CCardText>
 													<CButton><Link to={`/blog/${item?.id}`}>Read more</Link></CButton>
 												</CCol>

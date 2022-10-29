@@ -15,19 +15,21 @@ import testiPic1 from '../../images/testimonials/pic1.jpg';
 import testiPic2 from '../../images/testimonials/pic2.jpg';
 import testiPic3 from '../../images/testimonials/pic3.jpg';
 import { userApi } from './../../api/userApi';
-import Parser from 'html-react-parser';
+import ReactHtmlParser from 'react-html-parser'
 
 function BlogDetails(prop) {
 	const [post, setPost] = useState();
 	const { id } = useParams();
 
 	const getPostById = async () => {
+		console.log(id);
 		const response = await userApi.getPostById(id);
 		console.log(response);
 		setPost(response);
 	};
 
 	useEffect(() => {
+		// console.log(id);
 		getPostById();
 	},[])
 
@@ -73,7 +75,7 @@ function BlogDetails(prop) {
 												<li><i className="fa fa-comments-o"></i>10 Comment</li>
 											</ul>
 											<h3 className="post-title">{post?.title}</h3>
-											<div>{Parser(post?.body)}</div>
+											<p>{ReactHtmlParser(post?.body)}</p>
 											<div className="ttr-divider bg-gray"><i className="icon-dot c-square"></i></div>
 											<div className="widget_tag_cloud">
 												<h6>TAGS</h6>

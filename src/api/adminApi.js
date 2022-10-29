@@ -101,42 +101,64 @@ export const adminApi = {
     const url = `/api/post?title=${title}&status=${status}`;
     return axiosApi.get(url);
   },
+  getPostById: (id) => {
+    const url = `/api/post/${id}`;
+    return axiosApi.get(url);
+  },
   createPost: (params, image) => {
-    const url = "/api/post/create";
-    console.log(params);
+    const url = `/api/post/create`;
     var formData = new FormData();
     formData.append("image", image);
-    // formData.append("req", new Blob([JSON.stringify(params)], {
-    //   type: "application/json"
-    // }));
-    return axiosApi.post(url, {
-      "title": "Hành trình đi tìm ước mơ",
-      "body": "Ước mơ của mọi người là vô hạn",
-      "authorId": 3,
-      "status": 0
-    }, formData, {
+    formData.append("data", JSON.stringify(params));
+    return axiosApi.post(url, formData, {
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        "Content-Type": "multipart/form-data",
       }
     });
   },
-  updatePost: (params, id) => {
-    const url = `/api/post/update?id=${id}`;
-    return axiosApi.put(url, params);
+  updatePost: (id, params, image) => {
+    const url = `/api/post/update`;
+    var formData = new FormData();
+    formData.append("id", id);
+    formData.append("data", JSON.stringify(params));
+    formData.append("image", image);
+    return axiosApi.put(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    });
   },
 
   getAllSlider: (status) => {
     const url = `/api/slide/manage?status=${status}`;
     return axiosApi.get(url);
   },
-  createSlider: (image, validTo, status) => {
-    const url = `/api/slide/create?image=${image}&validTo=${validTo}&status=${status}`;
-    console.log("1", url);
-    return axiosApi.post(url);
+  getSliderById: (id) => {
+    const url = `/api/slide/${id}`;
+    return axiosApi.get(url);
   },
-  updateSlider: (params, id) => {
-    const url = `/api/slide/update?id=${id}`;
-    return axiosApi.put(url, params);
+  createSlider: (image, params) => {
+    const url = `/api/slide/create`;
+    var formData = new FormData();
+    formData.append("image", image);
+    console.log(image, params);
+    formData.append("data", JSON.stringify(params));
+    return axiosApi.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    });
+  },
+  updateSlider: (id, image, params) => {
+    const url = `/api/slide/update`;
+    var formData = new FormData();
+    formData.append("id", id);
+    formData.append("image", image);
+    formData.append("data", JSON.stringify(params));
+    return axiosApi.put(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    });
   },
 };

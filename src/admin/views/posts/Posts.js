@@ -115,7 +115,6 @@ const Posts = () => {
 
                     <br />
                     <CButton
-                        // style={{ width: "135px", height: '37px' }}
                         color={row?.status === 1 ? "danger" : "warning"}
                         onClick={() =>
                             handleUpdateStatus(row, 1)
@@ -165,7 +164,7 @@ const Posts = () => {
                 status: statusChange,
             };
 
-            const response = await adminApi.updatePost(params, id);
+            const response = await adminApi.updatePost(id, params, null);
             setIsModify(!isModify);
             toast.success(response?.message, {
                 duration: 2000,
@@ -221,7 +220,7 @@ const Posts = () => {
 
     useEffect(() => {
         getListPost();
-    }, [isModify, status]);
+    }, [isModify, status, title]);
 
     return (
         <div>
@@ -267,7 +266,7 @@ const Posts = () => {
                                 setStatus(e.target.value);
                             }}
                         >
-                            <option >Status</option>
+                            <option value="">Status</option>
                             {optionStatus?.map((item, index) => {
                                 return (
                                     <option
@@ -303,133 +302,6 @@ const Posts = () => {
                 <div className="body flex-grow-1 px-3">
                     <DataTable columns={columns} data={listPost} pagination />
                 </div>
-                {/* <CTable
-                    align="middle"
-                    className="mb-0 border"
-                    hover
-                    responsive
-                >
-                    <CTableHead color="light">
-                        <CTableRow>
-                            <CTableHeaderCell className="text-center">ID</CTableHeaderCell>
-                            <CTableHeaderCell>Thumbnail</CTableHeaderCell>
-                            <CTableHeaderCell>Post Title</CTableHeaderCell>
-                            <CTableHeaderCell>Brief Info</CTableHeaderCell>
-                            <CTableHeaderCell>Status</CTableHeaderCell>
-                            <CTableHeaderCell className="text-center">
-                                Action
-                            </CTableHeaderCell>
-                        </CTableRow>
-                    </CTableHead>
-                    <CTableBody>
-                        {listPost?.map((item, index) => (
-                            <CTableRow
-                                v-for="item in tableItems"
-                                key={index}
-                            >
-                                <CTableDataCell
-                                    className="text-center"
-                                    style={{
-                                        verticalAlign: "inherit",
-                                    }}
-                                >
-                                    {item?.id}
-                                </CTableDataCell>
-                                <CTableDataCell
-                                    style={{
-                                        verticalAlign: "inherit",
-                                    }}
-                                >
-                                    <CImage rounded thumbnail src={item?.thumnailUrl} width={200} height={200} />
-                                </CTableDataCell>
-                                <CTableDataCell
-                                    style={{
-                                        verticalAlign: "inherit",
-                                    }}
-                                >
-                                    <div>{item?.post}</div>
-                                </CTableDataCell>
-                                <CTableDataCell
-                                    style={{
-                                        verticalAlign: "inherit",
-                                    }}
-                                >
-                                    <div>{item?.briefInfo}</div>
-                                </CTableDataCell>
-                                <CTableDataCell
-                                    style={{
-                                        verticalAlign: "inherit",
-                                    }}
-                                >
-                                    <div>{item?.status}</div>
-                                    <br />
-                                    <div>{item?.createDate}</div>
-                                </CTableDataCell>
-                                <CTableDataCell className="text-center"
-                                    style={{
-                                        verticalAlign: "inherit",
-                                    }}
-                                >
-                                    <div>
-                                        {(() => {
-                                            if (item?.status === 'Submitted') {
-                                                return (<CButton
-                                                    className="mb-2"
-                                                    style={{ width: "135px", height: '37px' }}
-                                                    color="warning"
-                                                    onClick={() =>
-                                                        handleUpdateStatus(item)
-                                                    }
-                                                >
-                                                    Approve
-                                                </CButton>)
-                                            } else {
-                                                if (item?.status === 'Draft') {
-                                                    return (<CButton
-                                                        className="mb-2"
-                                                        style={{ width: "135px", height: '37px' }}
-                                                        color="primary"
-                                                        onClick={() =>
-                                                            history.push(
-                                                                "/admin/posts/" +
-                                                                item?.id
-                                                            )
-                                                        }
-                                                    >
-                                                        Edit
-                                                    </CButton>)
-                                                }
-                                            }
-                                        })()}
-                                    </div>
-                                    <div>
-                                        <CButton
-                                            className="mb-2"
-                                            style={{ width: "135px", height: '37px' }}
-                                            color={item?.status === 'Submitted' ? "danger" : "warning"}
-                                            onClick={() =>
-                                                handleUpdateStatus(item)
-                                            }
-                                        >{(() => {
-                                            if (item?.status === 'Draft') {
-                                                return (<>Submit</>)
-                                            } else if (item?.status === 'Submitted') {
-                                                return (<>Reject</>)
-                                            } else if (item?.status === 'Published') {
-                                                return (<>Achieve</>)
-                                            } else if (item?.status === 'Achieved') {
-                                                return (<>Publish</>)
-                                            } else if (item?.status === 'Rejected') {
-                                                return (<>Submit</>)
-                                            }
-                                        })()}
-                                        </CButton>
-                                    </div>
-                                </CTableDataCell>
-                            </CTableRow>
-                        ))}
-                    </CTableBody>
-                </CTable> */}
 
                 <AppFooter />
             </div>
