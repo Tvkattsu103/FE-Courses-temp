@@ -139,32 +139,9 @@ const Sliders = () => {
         }
     };
 
-
-    // const handleUpdateStatus = async (e) => {
-    //     try {
-    //         const params = {
-    //             status: e.status,
-    //         };
-    //         if (e.status === 'Draft') {
-
-    //         } else {
-
-    //         }
-    //         const response = await adminApi.updateStatusSlider(params, e?.id);
-    //         toast.success(response?.message, {
-    //             duration: 2000,
-    //         });
-    //         setIsModify(!isModify);
-    //     } catch (responseError) {
-    //         toast.error(responseError, {
-    //             duration: 2000,
-    //         });
-    //     }
-    // };
-
     useEffect(() => {
         getListSlider();
-    }, [isModify]);
+    }, [isModify, status]);
 
     return (
         <div>
@@ -179,7 +156,7 @@ const Sliders = () => {
                             aria-label="Default select example"
                             style={{ margin: "0px 10px", width: "140px" }}
                             onChange={(e) => {
-                                // setStatus(e.target.value);
+                                setStatus(e.target.value);
                             }}
                         >
                             <option >Status</option>
@@ -187,13 +164,6 @@ const Sliders = () => {
                             <option value="1">Published</option>
                             <option value="2">Achieved</option>
                         </CFormSelect>
-                        <CFormInput
-                            type="text"
-                            id="exampleInputPassword1"
-                            placeholder="Search..."
-                            //   onChange={onSearch}
-                            style={{ width: "350px" }}
-                        />
                     </div>
                     <div className={Styles.inputSearch}>
                         <button
