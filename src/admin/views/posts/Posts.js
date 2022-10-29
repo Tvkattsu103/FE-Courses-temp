@@ -10,10 +10,14 @@ import { adminApi } from "../../../api/adminApi";
 import toast, { Toaster } from "react-hot-toast";
 import Styles from "./style.module.scss";
 import DataTable from "react-data-table-component";
+import CIcon from '@coreui/icons-react';
+import { cilPen } from "@coreui/icons";
 
 const Posts = () => {
     const [listPost, setListPost] = useState([]);
     const [isModify, setIsModify] = useState(false);
+    const [status, setStatus] = useState("");
+    const [title, setTitle] = useState("");
     const history = useHistory();
 
     const columns = [
@@ -104,7 +108,7 @@ const Posts = () => {
                                 className="mb-2"
                                 href={`/react/admin/posts/${row?.id}`} color="primary"
                             >
-                                Edit
+                                <CIcon icon={cilPen}/>
                             </CButton>)
                         }
                     })()}
@@ -175,7 +179,7 @@ const Posts = () => {
 
     const getListPost = async () => {
         try {
-            const response = await adminApi.getAllPost();
+            const response = await adminApi.getAllPost(title, status);
             setListPost(Object.values(response));
             console.log(Object.values(response));
         } catch (responseError) {
@@ -203,24 +207,21 @@ const Posts = () => {
     //         });
     //     }
     // };
+    const onSearch = (e) => {
+        setTitle(e.target.value);
+    }
 
-    const handleDeletePost = async (e) => {
-        try {
-            const response = await adminApi.deletePost(e?.id);
-            toast.success(response?.message, {
-                duration: 2000,
-            });
-            setIsModify(!isModify);
-        } catch (responseError) {
-            toast.error(responseError, {
-                duration: 2000,
-            });
-        }
-    };
+    const optionStatus = [
+        { status: 0, label: "Draft" },
+        { status: 1, label: "Submitted" },
+        { status: 2, label: "Published" },
+        { status: 3, label: "Achieved" },
+        { status: 4, label: "Rejected" },
+    ];
 
     useEffect(() => {
         getListPost();
-    }, [isModify]);
+    }, [isModify, status]);
 
     return (
         <div>
@@ -248,35 +249,43 @@ const Posts = () => {
                         <div>entries</div>
                     </div> */}
                     <div className={Styles.showEntry}>
-                    <CFormSelect
-                        aria-label="Default select example"
-                        style={{ margin: "0px 0px", width: "140px" }}
-                        onChange={(e) => {
-                            // setStatus(e.target.value);
-                        }}
-                    >
-                        <option value="">Category</option>
-                        <option value={true}>Active</option>
-                        <option value={false}>Inactive</option>
-                    </CFormSelect>
-                    <CFormSelect
-                        aria-label="Default select example"
-                        style={{ margin: "0px 10px", width: "140px" }}
-                        onChange={(e) => {
-                            // setStatus(e.target.value);
-                        }}
-                    >
-                        <option >Status</option>
-                        <option value={true}>Active</option>
-                        <option value={false}>Inactive</option>
-                    </CFormSelect>
-                    <CFormInput
-                        type="text"
-                        id="exampleInputPassword1"
-                        placeholder="Search..."
-                        //   onChange={onSearch}
-                        style={{ width: "350px" }}
-                    />
+                        <CFormSelect
+                            aria-label="Default select example"
+                            style={{ margin: "0px 0px", width: "140px" }}
+                            onChange={(e) => {
+                                // setStatus(e.target.value);
+                            }}
+                        >
+                            <option value="">Category</option>
+                            <option value={true}>Active</option>
+                            <option value={false}>Inactive</option>
+                        </CFormSelect>
+                        <CFormSelect
+                            aria-label="Default select example"
+                            style={{ margin: "0px 10px", width: "140px" }}
+                            onChange={(e) => {
+                                setStatus(e.target.value);
+                            }}
+                        >
+                            <option >Status</option>
+                            {optionStatus?.map((item, index) => {
+                                return (
+                                    <option
+                                        key={index}
+                                        value={item?.status}
+                                    >
+                                        {item?.label}
+                                    </option>
+                                );
+                            })}
+                        </CFormSelect>
+                        <CFormInput
+                            type="text"
+                            id="exampleInputPassword1"
+                            placeholder="Search..."
+                            onChange={onSearch}
+                            style={{ width: "350px" }}
+                        />
                     </div>
                     <div className={Styles.inputSearch}>
                         <button

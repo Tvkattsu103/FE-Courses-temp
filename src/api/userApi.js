@@ -44,4 +44,15 @@ export const userApi = {
         const url = "/api/web-contact/add";
         return axiosApi.post(url, params);
     },
+
+    //Blog
+    getAllPost: (title, status) => {
+        const url = `/api/post?title=${title}&status=${status}`;
+        return axiosApi.get(url);
+    },
+
+    getPostById: (id) => {
+        const url = `/api/post/${id}`;
+        return axiosApi.get(url);
+    },
 };

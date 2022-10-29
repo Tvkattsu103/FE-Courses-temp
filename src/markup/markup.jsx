@@ -119,7 +119,7 @@ class Markup extends Component {
                             component={BlogClassicSidebar}
                         />
                         <Route
-                            path="/blog-details"
+                            path="/blog/:id"
                             exact
                             component={BlogDetails}
                         />

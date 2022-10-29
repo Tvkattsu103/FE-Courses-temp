@@ -27,19 +27,20 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function SliderDetail(props) {
     const [slider, setSlider] = useState();
-    const [title, setTitle] = useState();
-    const [category, setCategory] = useState();
-    const [status, setStatus] = useState();
-    const [author, setAuthor] = useState();
-    const [brief, setBrief] = useState();
-    const [content, setContent] = useState();
+    const [validTo, setValidTo] = useState(0);
+    const [status, setStatus] = useState(1);
     const [hasUpdate, setHasUpdate] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
+    const [dateTo, setDateTo] = useState();
+    const [preview, setPreview] = useState();
+    const [image, setImage] = useState();
     const location = useLocation();
     const id = location.pathname.substring(
         "/admin/sliders/".length,
         location.pathname.length
     );
+    const type = id !== "create" ? 1 : 0;
+    const img = "https://i.fbcd.co/products/resized/resized-750-500/563d0201e4359c2e890569e254ea14790eb370b71d08b6de5052511cc0352313.jpg";
 
     const getSliderById = async () => {
         // const response = await adminApi.getAllSlider();
@@ -49,15 +50,15 @@ function SliderDetail(props) {
     const handleUpdateSlider = async () => {
         try {
             const params = {
-                slider: slider,
-                title: title,
-                category: category,
+                image: image,
+                validTo: validTo,
                 status: status,
-                author: author,
-                brief: brief,
-                content: content
             };
-            const response = await adminApi.updateSlider(params, id);
+            console.log(id, type);
+            const response =
+                type === 1
+                    ? await adminApi.updateSlider(params, id)
+                    : await adminApi.createSlider(image, validTo, status);
             setHasUpdate(!hasUpdate);
             toast.success(response?.message, {
                 duration: 2000,
@@ -68,6 +69,13 @@ function SliderDetail(props) {
             });
         }
     };
+
+    const handleThumbnail = (e) => {
+        const fileDropped = e.target.files[0];
+        setImage(fileDropped)
+        const previewUrl = URL.createObjectURL(fileDropped);
+        setPreview(previewUrl);
+    }
 
     useEffect(() => {
         getSliderById();
@@ -91,58 +99,29 @@ function SliderDetail(props) {
                                         Picture
                                     </CFormLabel>
                                     <br />
-                                    <CImage rounded thumbnail src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" width={1200} style={{ maxHeight: '450px', display: 'block', margin: 'auto' }} />
-                                </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Title
-                                    </CFormLabel>
-                                    <CFormInput
-                                        type="title"
-                                        id="exampleFormControlInput1"
-                                        placeholder="Title"
-                                        defaultValue={slider?.title}
-                                        onChange={(e) =>
-                                            setTitle(e.target.value)
-                                        }
+                                    {/* <CImage rounded thumbnail src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" width={1200} style={{ maxHeight: '450px', display: 'block', margin: 'auto' }} /> */}
+                                    <CImage
+                                        rounded
+                                        thumbnail
+                                        src={!preview ? slider?.thumnailUrl ? slider?.thumnailUrl : img : preview}
+                                        width={1200}
+                                        style={{ maxHeight: '450px', display: 'block', margin: 'auto' }}
+                                        onLoad={() => URL.revokeObjectURL(preview)}
                                     />
-                                </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Back Link
-                                    </CFormLabel>
                                     <CFormInput
-                                        type="title"
-                                        id="exampleFormControlInput1"
-                                        placeholder="Back link"
-                                        defaultValue={slider?.title}
-                                        onChange={(e) =>
-                                            setTitle(e.target.value)
-                                        }
+                                        className="form-control"
+                                        type="file"
+                                        accept=".jpg, .png, .jpeg"
+                                        onChange={(e) => handleThumbnail(e)}
                                     />
                                 </div>
                                 <CRow className="g-3 mb-3">
                                     <CCol sm={4}>
                                         <div className="mb-3">
                                             <CFormLabel htmlFor="exampleFormControlInput1">
-                                                Due Date
+                                                Valid To
                                             </CFormLabel>
-                                            {/* <CFormInput
-                                                type="date"
-                                                id="exampleFormControlInput1"
-                                                disabled={isNotAdmin}
-                                                placeholder=""
-                                                value={
-                                                    type === 1
-                                                        ? new Date(
-                                                            dueDate
-                                                        ).toLocaleDateString("en-CA")
-                                                        : ""
-                                                }
-                                                onChange={(e) =>
-                                                    setDateTo(new Date(e.target.value))
-                                                }
-                                            /> */}
+                                            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
                                         </div>
                                     </CCol>
                                     <CCol sm={4} className="offset-sm-4">
@@ -150,10 +129,13 @@ function SliderDetail(props) {
                                             <CFormLabel htmlFor="exampleFormControlInput1">
                                                 Status
                                             </CFormLabel>
-                                            <CFormSelect id="autoSizingSelect">
-                                                <option value="1">Draft</option>
-                                                <option value="2">Published</option>
-                                                <option value="3">Achieved</option>
+                                            <CFormSelect
+                                                id="autoSizingSelect"
+                                                onChange={(e) => setStatus(e.target.value)}
+                                            >
+                                                <option value="0">Draft</option>
+                                                <option value="1">Published</option>
+                                                <option value="2">Achieved</option>
                                             </CFormSelect>
                                         </div>
                                     </CCol>

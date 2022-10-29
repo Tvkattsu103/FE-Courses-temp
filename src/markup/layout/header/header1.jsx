@@ -133,28 +133,33 @@ class Header extends Component {
                           style={
                             this.state.isExpand
                               ? {
-                                  visibility: "visible",
-                                  opacity: "1",
-                                  width:'200px'
-                                }
+                                visibility: "visible",
+                                opacity: "1",
+                                width: '200px'
+                              }
                               : {
-                                  visibility: "hidden",
-                                  opacity: "0",
-                                }
+                                visibility: "hidden",
+                                opacity: "0",
+                              }
                           }
                         >
                           {this.state.role === "ROLE_ADMIN" ? (
-                            <li>
-                              <Link to="/admin/dashboard">Dashboard</Link>
-                            </li>
+                            <Link to="/admin/dashboard">
+                              <li>
+                                Dashboard
+                              </li>
+                            </Link>
                           ) : this.state.role === "ROLE_SUPPORTER" ? (
-                            <li>
-                              <Link to="/admin/contact">Admin</Link>
-                            </li>
+                            <Link to="/admin/contact">
+                              <li>
+                                Admin
+                              </li>
+                            </Link>
                           ) : this.state.role === "ROLE_MANAGER" ? (
-                            <li>
-                              <Link to="/admin/subjects">Admin</Link>
+                            <Link to="/admin/subjects"><li>
+                              Admin
                             </li>
+                            </Link>
                           ) : (
                             ""
                           )}

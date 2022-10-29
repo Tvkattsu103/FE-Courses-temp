@@ -58,8 +58,7 @@ export const adminApi = {
   },
 
   // subject
-  getAllSubject: (name,status) => {
-   
+  getAllSubject: (name, status) => {
     const url = `/api/subjects?status=${status}&code=${name}`;
     return axiosApi.get(url);
   },
@@ -98,17 +97,46 @@ export const adminApi = {
     return axiosApi.post(url, params);
   },
 
-  getAllPost: () => {
-    const url = "/api/post";
+  getAllPost: (title, status) => {
+    const url = `/api/post?title=${title}&status=${status}`;
     return axiosApi.get(url);
   },
-  createPost: (params) => {
+  createPost: (params, image) => {
     const url = "/api/post/create";
     console.log(params);
-    return axiosApi.post(url, params);
+    var formData = new FormData();
+    formData.append("image", image);
+    // formData.append("req", new Blob([JSON.stringify(params)], {
+    //   type: "application/json"
+    // }));
+    return axiosApi.post(url, {
+      "title": "Hành trình đi tìm ước mơ",
+      "body": "Ước mơ của mọi người là vô hạn",
+      "authorId": 3,
+      "status": 0
+    }, formData, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
   },
   updatePost: (params, id) => {
     const url = `/api/post/update?id=${id}`;
+    return axiosApi.put(url, params);
+  },
+
+  getAllSlider: (status) => {
+    const url = `/api/slide/manage?status=${status}`;
+    return axiosApi.get(url);
+  },
+  createSlider: (image, validTo, status) => {
+    const url = `/api/slide/create?image=${image}&validTo=${validTo}&status=${status}`;
+    console.log("1", url);
+    return axiosApi.post(url);
+  },
+  updateSlider: (params, id) => {
+    const url = `/api/slide/update?id=${id}`;
     return axiosApi.put(url, params);
   },
 };

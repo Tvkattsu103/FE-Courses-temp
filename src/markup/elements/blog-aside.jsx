@@ -63,24 +63,6 @@ const options = {
     },
 };
 
-function GalleryImg() {
-    return (
-        <>
-            <SimpleReactLightbox>
-                <SRLWrapper options={options}>
-                    <ul className="magnific-image">
-                        {content.map((item, index) => (
-                            <li key={index}>
-                                <img src={item.thumb} alt="" />
-                            </li>
-                        ))}
-                    </ul>
-                </SRLWrapper>
-            </SimpleReactLightbox>
-        </>
-    );
-}
-
 class BlogAside extends Component {
     render() {
         return (
@@ -105,6 +87,16 @@ class BlogAside extends Component {
                                 </div>
                             </form>
                         </div>
+                    </div>
+                    <div className="widget widget_archive">
+                        <h5 className="widget-title">List of Blogs</h5>
+                        <ul>
+                            <li className="active"><Link to="#">General</Link></li>
+                            <li><Link to="/courses-details">IT & Software</Link></li>
+                            <li><Link to="/courses-details">Photography</Link></li>
+                            <li><Link to="/courses-details">Programming Language</Link></li>
+                            <li><Link to="/courses-details">Technology</Link></li>
+                        </ul>
                     </div>
                     <div className="widget recent-posts-entry">
                         <h6 className="widget-title">Recent Posts</h6>
@@ -197,39 +189,6 @@ class BlogAside extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="widget widget-newslatter">
-                        <h6 className="widget-title">Newsletter</h6>
-                        <div className="news-box">
-                            <p>
-                                Enter your e-mail and subscribe to our
-                                newsletter.
-                            </p>
-                            <form className="subscription-form" method="post">
-                                <div className="ajax-message"></div>
-                                <div className="input-group">
-                                    <input
-                                        name="email"
-                                        required="required"
-                                        type="email"
-                                        className="form-control"
-                                        placeholder="Your Email Address"
-                                    />
-                                    <button
-                                        name="submit"
-                                        value="Submit"
-                                        type="submit"
-                                        className="btn radius-no"
-                                    >
-                                        <i className="fa fa-paper-plane-o"></i>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div className="widget widget_gallery gallery-grid-4">
-                        <h6 className="widget-title">Our Gallery</h6>
-                        <GalleryImg />
                     </div>
                     <div className="widget widget_tag_cloud">
                         <h6 className="widget-title">Tags</h6>

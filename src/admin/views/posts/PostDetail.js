@@ -44,35 +44,32 @@ function PostDetail(props) {
 
     const getPostById = async () => {
         const response = await adminApi.getAllPost();
-        setPost(response?.filter((item) => item?.id == id)[0]);
+        setPost(response?.filter((item) => item?.id === id)[0]);
     };
 
-    const handleUpdatePost = async () => {
-        console.log(JSON.parse(Cookies.get("user")).id);
+    const handleUpdatePost = async (e) => {
+        console.log(type);
         try {
             const params = {
                 title: title,
-                category: category,
+                // category: category,
                 status: status,
                 author: author,
                 authorId: JSON.parse(Cookies.get("user")).id,
-                thumnailUrl: thumbnailUrl,
                 body: content
             };
 
             const response =
                 type === 1
                     ? await adminApi.updatePost(params, id)
-                    : await adminApi.createPost(params);
+                    : await adminApi.createPost(params, thumbnailUrl);
             // setHasUpdate(!hasUpdate);
             toast.success(response?.message, {
                 duration: 2000,
             });
             history.push("/admin/posts");
         } catch (responseError) {
-            toast.error(responseError, {
-                duration: 2000,
-            });
+            console.log(responseError);
         }
     };
 
@@ -230,7 +227,7 @@ function PostDetail(props) {
                                 </div>
                                 <div className="mb-3">
                                     <CButton
-                                        onClick={() => handleUpdatePost()}
+                                        onClick={(e) => handleUpdatePost(e)}
                                     >
                                         Save
                                     </CButton>

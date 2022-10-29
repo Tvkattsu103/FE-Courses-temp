@@ -129,7 +129,7 @@ function Login(props) {
                   <div className="form-group">
                     <div className="input-group">
                       <input
-                        name="name"
+                        name="email"
                         type="text"
                         required=""
                         placeholder="Email"

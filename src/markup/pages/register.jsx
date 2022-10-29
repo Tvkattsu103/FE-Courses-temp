@@ -100,7 +100,7 @@ function Register(props) {
                     <div className="form-group">
                       <div className="input-group">
                         <input
-                          name="name"
+                          name="username"
                           type="text"
                           placeholder="Your Username"
                           required=""
@@ -114,7 +114,7 @@ function Register(props) {
                     <div className="form-group">
                       <div className="input-group">
                         <input
-                          name="name"
+                          name="fullname"
                           type="text"
                           placeholder="Full Name"
                           required=""

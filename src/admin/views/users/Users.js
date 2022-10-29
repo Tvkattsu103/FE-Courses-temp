@@ -128,6 +128,7 @@ const Users = () => {
     try {
       const response = await adminApi.getListUser(name, status, role, size);
       setListUser(response);
+      console.log(response);
     } catch (responseError) {
       console.log(responseError);
     }
