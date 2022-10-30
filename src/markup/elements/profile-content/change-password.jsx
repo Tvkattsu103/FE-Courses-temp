@@ -29,8 +29,8 @@ function ChangePassword(props) {
                 duration: 2000,
             });
         } catch (responseError) {
-            toast.error(responseError?.message, {
-                duration: 2000,
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     };

@@ -145,9 +145,9 @@ const Users = () => {
       });
       setIsModify(!isModify);
     } catch (responseError) {
-      toast.error(responseError, {
-        duration: 2000,
-      });
+      toast.error(responseError?.data.message, {
+        duration: 7000,
+    });
     }
   };
   useEffect(() => {

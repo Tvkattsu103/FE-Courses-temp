@@ -10,64 +10,10 @@ import BlogAside from "../elements/blog-aside";
 
 // Images
 import bannerImg from '../../images/banner/banner1.jpg';
-import blogPic1 from '../../images/blog/latest-blog/pic1.jpg';
-import blogPic2 from '../../images/blog/latest-blog/pic2.jpg';
-import blogPic3 from '../../images/blog/latest-blog/pic3.jpg';
 import { CCard, CRow, CCol, CCardImage, CCardBody, CCardTitle, CCardText } from '@coreui/react';
 import { CButton } from '@coreui/react';
 import { userApi } from './../../api/userApi';
 import ReactHtmlParser from 'react-html-parser'
-
-const content = [
-	{
-		BlogThumb: blogPic1,
-		BlogTitle: "This Story Behind Education Will Haunt You Forever.",
-		BlogText: "Knowing that, you’ve optimised your pages countless amount of times.",
-		BlogUser: "William",
-		BlogDate: "Jan 02 2019",
-		BlogComment: "20 Comment",
-	},
-	{
-		BlogThumb: blogPic2,
-		BlogTitle: "What Will Education Be Like In The Next 50 Years?",
-		BlogText: "Knowing that, you’ve optimised your pages countless amount of times.",
-		BlogUser: "John",
-		BlogDate: "Feb 05 2019",
-		BlogComment: "14 Comment",
-	},
-	{
-		BlogThumb: blogPic3,
-		BlogTitle: "Master The Skills Of Education And Be.",
-		BlogText: "Knowing that, you’ve optimised your pages countless amount of times.",
-		BlogUser: "George",
-		BlogDate: "April 14 2019",
-		BlogComment: "23 Comment",
-	},
-	{
-		BlogThumb: blogPic3,
-		BlogTitle: "Eliminate Your Fears And Doubts About Education.",
-		BlogText: "Knowing that, you’ve optimised your pages countless amount of times.",
-		BlogUser: "Thomas",
-		BlogDate: "March 21 2019",
-		BlogComment: "28 Comment",
-	},
-	{
-		BlogThumb: blogPic1,
-		BlogTitle: "Seven Reasons You Should Fall In Love With Education.",
-		BlogText: "Knowing that, you’ve optimised your pages countless amount of times.",
-		BlogUser: "James",
-		BlogDate: "May 08 2019",
-		BlogComment: "26 Comment",
-	},
-	{
-		BlogThumb: blogPic2,
-		BlogTitle: "The Biggest Contribution Of Education To Humanity.",
-		BlogText: "Knowing that, you’ve optimised your pages countless amount of times.",
-		BlogUser: "Arthur",
-		BlogDate: "June 19 2019",
-		BlogComment: "15 Comment",
-	}
-]
 
 const BlogClassicSidebar = () => {
 	const [listPost, setListPost] = useState([]);
@@ -75,8 +21,7 @@ const BlogClassicSidebar = () => {
 	const getListPost = async () => {
         try {
             const response = await userApi.getAllPost("","");
-			console.log(response);
-            setListPost(response);
+            setListPost(response.filter((item) => item?.status === 2));
         } catch (responseError) {
             console.log(responseError);
         }

@@ -41,10 +41,15 @@ function SliderDetail(props) {
     const img = "https://i.fbcd.co/products/resized/resized-750-500/563d0201e4359c2e890569e254ea14790eb370b71d08b6de5052511cc0352313.jpg";
 
     const getSliderById = async () => {
-        const response = await adminApi.getSliderById(id);
-        response.validTo = new Date(response.validTo.substring(0,10));
-        setSlider(response);
-        console.log(response)
+        try {
+            const response = await adminApi.getSliderById(id);
+            setSlider(response);
+            setValidTo(response?.validTo);
+        } catch (responseError) {
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
+        }
     };
 
     const handleUpdateSlider = async () => {
@@ -63,8 +68,8 @@ function SliderDetail(props) {
             });
             history.push("/admin/sliders");
         } catch (responseError) {
-            toast.error(responseError, {
-                duration: 2000,
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     };
@@ -97,10 +102,10 @@ function SliderDetail(props) {
                             <CCardBody>
                                 <div className="mb-3">
                                     <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Picture
+                                        Image (
+                                        <span style={{ color: "red" }}>*</span>)
                                     </CFormLabel>
                                     <br />
-                                    {/* <CImage rounded thumbnail src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" width={1200} style={{ maxHeight: '450px', display: 'block', margin: 'auto' }} /> */}
                                     <CImage
                                         rounded
                                         thumbnail
@@ -120,23 +125,22 @@ function SliderDetail(props) {
                                     <CCol sm={4}>
                                         <div className="mb-3">
                                             <CFormLabel htmlFor="exampleFormControlInput1">
-                                                Valid To
+                                                Valid To (
+                                                <span style={{ color: "red" }}>*</span>)
                                             </CFormLabel>
                                             {/* <DatePicker selected={validTo} onChange={(date) => setValidTo(new Date(date))} /> */}
                                             <CFormInput
                                                 type="date"
                                                 id="exampleFormControlInput1"
                                                 placeholder=""
-                                                value={!validTo ? slider?.validTo
-                                                    ? new Date(
-                                                        slider?.validTo
-                                                    ).toLocaleDateString("en-CA")
-                                                    : new Date(
-                                                        validTo
-                                                    ).toLocaleDateString("en-CA")
-                                                    : new Date(
-                                                        validTo
-                                                    ).toLocaleDateString("en-CA")
+                                                value={
+                                                    validTo
+                                                        ? new Date(
+                                                            validTo
+                                                        ).toLocaleDateString("en-CA")
+                                                        : new Date(
+                                                            ""
+                                                        ).toLocaleDateString("en-CA")
                                                 }
                                                 onChange={(e) =>
                                                     setValidTo(

@@ -1,7 +1,8 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useHistory } from "react-router-dom";
 import { userApi } from "../../../api/userApi";
+import avatarProfile from '../../../images/icon/avatar.svg'
+import Cookies from "js-cookie";
 
 function EditProfile({ stateChanger, state, user }) {
     const [fullname, setFullname] = useState();
@@ -40,6 +41,8 @@ function EditProfile({ stateChanger, state, user }) {
             };
             console.log(param);
             const response = await userApi.updateInfo(param, user?.id);
+            const getNewInfo = await userApi.getUserDetail();
+            Cookies.set("user", JSON.stringify(getNewInfo));
             stateChanger(!state);
             setAlertMessage(response?.message);
             setAlertVisible(true);
@@ -48,7 +51,9 @@ function EditProfile({ stateChanger, state, user }) {
                 duration: 2000,
             });
         } catch (responseError) {
-            console.log(responseError);
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
         }
     };
 
@@ -128,7 +133,7 @@ function EditProfile({ stateChanger, state, user }) {
                         <div className="col-12 col-sm-8 col-md-8 col-lg-7">
                             <img
                                 style={{ width: "100px", height: "100px" }}
-                                src={user?.avatar}
+                                src={user?.avatar && avatarProfile}
                                 alt=""
                             />
                         </div>

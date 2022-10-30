@@ -35,7 +35,7 @@ const AppHeaderDropdown = () => {
                 className="py-0"
                 caret={false}
             >
-                <CAvatar src={user.avatar || avatar1} size="md" />
+                <CAvatar src={user.avatar && avatar1} size="md" />
             </CDropdownToggle>
             <CDropdownMenu className="pt-0" placement="bottom-end">
                 <CDropdownHeader className="bg-light fw-semibold py-2">

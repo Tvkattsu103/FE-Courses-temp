@@ -43,8 +43,14 @@ function PostDetail(props) {
     const img = "https://i.fbcd.co/products/resized/resized-750-500/563d0201e4359c2e890569e254ea14790eb370b71d08b6de5052511cc0352313.jpg";
 
     const getPostById = async () => {
-        const response = await adminApi.getPostById(id);
-        setPost(response);
+        try {
+            const response = await adminApi.getPostById(id);
+            setPost(response);
+        } catch (responseError) {
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
+        }
     };
 
     const handleUpdatePost = async (e) => {
@@ -69,7 +75,9 @@ function PostDetail(props) {
             });
             history.push("/admin/posts");
         } catch (responseError) {
-            console.log(responseError);
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
         }
     };
 
@@ -81,7 +89,7 @@ function PostDetail(props) {
     }
 
     useEffect(() => {
-        if(type === 1){
+        if (type === 1) {
             getPostById();
         }
     }, []);
@@ -109,7 +117,8 @@ function PostDetail(props) {
                             <CCardBody>
                                 <div className="mb-3">
                                     <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Post title
+                                        Post title (
+                                        <span style={{ color: "red" }}>*</span>)
                                     </CFormLabel>
                                     <CFormInput
                                         type="title"
@@ -196,15 +205,16 @@ function PostDetail(props) {
                                     </CCol>
                                     <CCol sm={4}>
                                         <CFormLabel htmlFor="exampleFormControlInput1">
-                                            Change thumbnail
+                                            Change thumbnail (
+                                            <span style={{ color: "red" }}>*</span>)
                                         </CFormLabel>
                                         <CImage
                                             rounded
                                             thumbnail
-                                            src={!preview ? post?.thumnailUrl ? post?.thumnailUrl : img : preview }
+                                            src={!preview ? post?.thumnailUrl ? post?.thumnailUrl : img : preview}
                                             width={400}
                                             // height={300}
-                                            style={{maxHeight: '240px'}}
+                                            style={{ maxHeight: '240px' }}
                                             onLoad={() => URL.revokeObjectURL(preview)}
                                         />
                                         <CFormInput
@@ -217,7 +227,8 @@ function PostDetail(props) {
                                 </CRow>
                                 <div className="mb-3">
                                     <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Post content
+                                        Post body (
+                                        <span style={{ color: "red" }}>*</span>)
                                     </CFormLabel>
                                     <CKEditor
                                         editor={ClassicEditor}

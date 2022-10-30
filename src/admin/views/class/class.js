@@ -5,7 +5,8 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import { useHistory } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import Styles from "./style.module.scss";
@@ -66,6 +67,7 @@ function Class() {
   const [packages, setPackages] = useState("");
   const [name, setName] = useState("");
   const role = JSON.parse(Cookies.get("user"))?.role;
+  const history = useHistory();
   const isNotAdminOrManager =
     role !== "ROLE_ADMIN" && role !== "ROLE_MANAGER" ? true : false;
 
@@ -74,15 +76,17 @@ function Class() {
       const response = await adminApi.getAllClass(name, status);
       setListClass(response);
     } catch (responseError) {
-      console.log(responseError);
-    }
+      toast.error(responseError?.data.message, {
+          duration: 7000,
+      });
+  }
   };
   const onSearch = async (e) => {
     setName(e.target.value);
   };
   useEffect(() => {
     getAllClass();
-  }, [status,name]);
+  }, [status, name]);
 
   return (
     <div>
@@ -129,7 +133,13 @@ function Class() {
               onChange={onSearch}
               style={{ width: "550px" }}
             />
-            <button style={{ backgroundColor: "#7367f0", border: "none" }}>
+            <button style={{ backgroundColor: "#7367f0", border: "none" }}
+              onClick={() =>
+                history.push(
+                  "/admin/class/create"
+                )
+              }
+            >
               Create New Class
             </button>
           </div>

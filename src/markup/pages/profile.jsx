@@ -15,6 +15,7 @@ import ChangePassword from "../elements/profile-content/change-password";
 // Images
 import bannerImg from "../../images/banner/banner1.jpg";
 import profilePic1 from "../../images/profile/pic1.jpg";
+import avatarProfile from '../../images/icon/avatar.svg'
 import { userApi } from "../../api/userApi";
 
 function Profile(props) {
@@ -25,6 +26,7 @@ function Profile(props) {
         try {
             const response = await userApi.getUserDetail();
             setUser(response);
+            
         } catch (responseError) {
             console.log(responseError);
         }
@@ -70,8 +72,8 @@ function Profile(props) {
                                                 <div className="user-profile-thumb ">
                                                     <img
                                                         src={
-                                                            user?.avatar ||
-                                                            profilePic1
+                                                            user?.avatar &&
+                                                            avatarProfile
                                                         }
                                                         className="w-100 h-100"
                                                         alt=""

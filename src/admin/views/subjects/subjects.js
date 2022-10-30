@@ -21,10 +21,11 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { adminApi } from "../../../api/adminApi";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import { FaDatabase } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 
 function Subjects() {
   const columns = [
@@ -90,6 +91,7 @@ function Subjects() {
   const [status, setStatus] = useState('');
   const [size, setSize] = useState(10);
   const [name, setName] = useState('');
+  const history = useHistory();
   const isNotAdmin = role !== "ROLE_ADMIN" ? true : false;
 
   const getAllSubject = async () => {
@@ -97,7 +99,9 @@ function Subjects() {
       const response = await adminApi.getAllSubject(name, status);
       setListSubject(response);
     } catch (responseError) {
-      console.log(responseError);
+      toast.error(responseError?.data.message, {
+        duration: 7000,
+      });
     }
   };
   const onSearch = async (e) => {
@@ -153,7 +157,13 @@ function Subjects() {
               style={{ width: "550px" }}
               onChange={onSearch}
             />
-            <button style={{ backgroundColor: "#7367f0", border: "none" }}>
+            <button style={{ backgroundColor: "#7367f0", border: "none" }}
+              onClick={() =>
+                history.push(
+                  "/admin/subjects/create"
+                )
+              }
+            >
               Create New Subject
             </button>
           </div>

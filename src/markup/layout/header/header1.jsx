@@ -70,8 +70,8 @@ class Header extends Component {
     }
     if (this.state.user !== undefined) {
       this.setState({ user: JSON.parse(this.state.user) });
+      console.log(JSON.parse(this.state.user));
     }
-    console.log(this.state.user);
   }
 
   handleLogout() {
@@ -126,7 +126,7 @@ class Header extends Component {
                           }
                           className="mb-0"
                         >
-                          <CAvatar src={this.state.user?.avatar || avatarProfile} />
+                          <CAvatar src={this.state.user?.avatar && avatarProfile} />
                         </div>
                         <ul
                           className="sub-menu"

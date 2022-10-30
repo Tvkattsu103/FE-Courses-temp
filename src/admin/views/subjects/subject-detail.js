@@ -44,7 +44,9 @@ function SubjectDetail(props) {
             const response = await adminApi.getAllSubject();
             setListSubject(response);
         } catch (responseError) {
-            console.log(responseError);
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
         }
     };
 
@@ -54,8 +56,8 @@ function SubjectDetail(props) {
             setSubject(response);
             console.log(response);
         } catch (responseError) {
-            toast.error(responseError?.message, {
-                duration: 2000,
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     };
@@ -65,8 +67,8 @@ function SubjectDetail(props) {
             const response = await adminApi.getListManager();
             setListManager(response);
         } catch (responseError) {
-            toast.error(responseError?.message, {
-                duration: 2000,
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     };
@@ -76,8 +78,8 @@ function SubjectDetail(props) {
             const response = await adminApi.getListExpert();
             setListExpert(response);
         } catch (responseError) {
-            toast.error(responseError?.message, {
-                duration: 2000,
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     };
@@ -116,9 +118,9 @@ function SubjectDetail(props) {
                 });
             }
             history.push("/admin/subjects");
-        } catch (error) {
-            toast.error(error?.message, {
-                duration: 2000,
+        } catch (responseError) {
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     };

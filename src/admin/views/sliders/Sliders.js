@@ -124,8 +124,8 @@ const Sliders = () => {
                 duration: 2000,
             });
         } catch (responseError) {
-            toast.error(responseError, {
-                duration: 2000,
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     }
@@ -135,7 +135,9 @@ const Sliders = () => {
             const response = await adminApi.getAllSlider(status, validTo);
             setListSlider(response);
         } catch (responseError) {
-            console.log("error:", responseError);
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
         }
     };
 

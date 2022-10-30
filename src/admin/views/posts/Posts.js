@@ -170,8 +170,8 @@ const Posts = () => {
                 duration: 2000,
             });
         } catch (responseError) {
-            toast.error(responseError, {
-                duration: 2000,
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     }
@@ -182,7 +182,9 @@ const Posts = () => {
             setListPost(Object.values(response));
             console.log(Object.values(response));
         } catch (responseError) {
-            console.log(responseError);
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
         }
     };
     // const handleUpdateStatus = async (e) => {

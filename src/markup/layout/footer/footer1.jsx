@@ -120,8 +120,10 @@ function Footer1(props) {
       setAlertVisible(true);
       setAlertType("success");
     } catch (responseError) {
-      console.log(responseError);
-    }
+      toast.error(responseError?.data.message, {
+          duration: 7000,
+      });
+  }
   };
 
   return (

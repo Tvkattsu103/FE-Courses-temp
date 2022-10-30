@@ -41,8 +41,8 @@ function ClassDetail(props) {
             setDateFrom(response?.dateFrom);
             setDateTo(response?.dateTo);
         } catch (responseError) {
-            toast.error(responseError?.message, {
-                duration: 2000,
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     };
@@ -51,8 +51,10 @@ function ClassDetail(props) {
         try {
             const response = await adminApi.getListTrainer();
             setListTrainer(response);
-        } catch (err) {
-            console.log(err);
+        } catch (responseError) {
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
         }
     };
 
@@ -75,9 +77,9 @@ function ClassDetail(props) {
                 duration: 2000,
             });
             history.push("/admin/class");
-        } catch (error) {
-            toast.error(error?.message, {
-                duration: 2000,
+        } catch (responseError) {
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     };
@@ -141,9 +143,14 @@ function ClassDetail(props) {
                                         id="exampleFormControlInput1"
                                         disabled={isNotAdmin}
                                         placeholder=""
-                                        value={new Date(
+                                        value={
                                             dateFrom
-                                        ).toLocaleDateString("en-CA")
+                                                ? new Date(
+                                                    dateFrom
+                                                ).toLocaleDateString("en-CA")
+                                                : new Date(
+                                                    ""
+                                                ).toLocaleDateString("en-CA")
                                         }
                                         onChange={(e) =>
                                             setDateFrom(
@@ -163,11 +170,13 @@ function ClassDetail(props) {
                                         disabled={isNotAdmin}
                                         placeholder=""
                                         value={
-                                            type === 1
+                                            dateTo
                                                 ? new Date(
                                                     dateTo
                                                 ).toLocaleDateString("en-CA")
-                                                : ""
+                                                : new Date(
+                                                    ""
+                                                ).toLocaleDateString("en-CA")
                                         }
                                         onChange={(e) =>
                                             setDateTo(new Date(e.target.value))

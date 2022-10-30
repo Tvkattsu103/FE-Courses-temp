@@ -36,7 +36,9 @@ function UserDetail(props) {
             const response = await adminApi.getListUser();
             setListUser(response);
         } catch (responseError) {
-            console.log(responseError);
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
         }
     };
 
@@ -58,8 +60,8 @@ function UserDetail(props) {
             const response = await adminApi.getUserById(id);
             setUser(response);
         } catch (responseError) {
-            toast.error(responseError?.message, {
-                duration: 2000,
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     };
@@ -91,8 +93,8 @@ function UserDetail(props) {
             });
             getUserById();
         } catch (responseError) {
-            toast.error(responseError?.message, {
-                duration: 2000,
+            toast.error(responseError?.data.message, {
+                duration: 7000,
             });
         }
     };

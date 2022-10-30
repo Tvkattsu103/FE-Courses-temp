@@ -59,14 +59,12 @@ function Login(props) {
       };
 
       const response = await userApi.loginAccount(param);
-      console.log(response);
       Cookies.set("id", response?.id);
       Cookies.set("username", response?.username);
       Cookies.set("access_token", response?.accessToken);
       Cookies.set("roles", response?.roles);
 
       const responseAvatar = await userApi.getUserDetail();
-      console.log(responseAvatar);
       Cookies.set("user", JSON.stringify(responseAvatar));
       toast.success("Login sucessfully", {
         duration: 1500,
