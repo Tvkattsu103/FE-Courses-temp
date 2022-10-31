@@ -28,6 +28,11 @@ function UserDetail(props) {
     const location = useLocation();
     const history = useHistory();
     const [option, setOption] = useState();
+    const id = location.pathname.substring(
+        "/admin/users/".length,
+        location.pathname.length
+    );
+    const type = id !== "create" ? 1 : 0;
 
     const getListRole = async () => {
         try {
@@ -39,10 +44,6 @@ function UserDetail(props) {
     };
 
     const getUserById = async () => {
-        const id = location.pathname.substring(
-            "/admin/users/".length,
-            location.pathname.length
-        );
         try {
             const response = await adminApi.getUserById(id);
             setUser(response);
@@ -85,7 +86,9 @@ function UserDetail(props) {
     };
     useEffect(() => {
         getListRole();
-        getUserById();
+        if (type === 1) {
+            getUserById();
+        }
     }, []);
 
     return (

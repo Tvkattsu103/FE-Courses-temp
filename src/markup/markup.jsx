@@ -28,7 +28,7 @@ import Login from "./pages/login";
 import ForgetPassword from "./pages/forget-password";
 
 // Courses
-import Courses from "./pages/courses";
+import ProductsUser from "./pages/courses";
 import CoursesDetails from "./pages/courses-details";
 
 // Blog Pages
@@ -49,7 +49,6 @@ import Error401 from "./pages/error-401";
 import Contact from "../admin/views/contact/contact";
 import ContactDetail from "../admin/views/contact/contact-detail";
 import Subjects from "../admin/views/subjects/subjects";
-import { useState } from "react";
 import SubjectDetail from "../admin/views/subjects/subject-detail";
 import Class from "../admin/views/class/class";
 import ClassDetail from "../admin/views/class/class-detail";
@@ -57,6 +56,9 @@ import Posts from "../admin/views/posts/Posts";
 import PostDetail from "../admin/views/posts/PostDetail";
 import Sliders from "../admin/views/sliders/Sliders";
 import SliderDetail from './../admin/views/sliders/SliderDetail';
+import Products from './../admin/views/products/Products';
+import ProductDetail from "../admin/views/products/ProductDetail";
+
 
 class Markup extends Component {
     render() {
@@ -105,7 +107,7 @@ class Markup extends Component {
                         <Route path="/profile" exact component={Profile} />
 
                         {/* Courses */}
-                        <Route path="/courses" exact component={Courses} />
+                        <Route path="/products" exact component={ProductsUser} />
                         <Route
                             path="/courses-details"
                             exact
@@ -172,6 +174,15 @@ class Markup extends Component {
                         </PrivateRoute>
                         <PrivateRoute path="/admin/sliders/:id" exact>
                             <SliderDetail />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/products" exact>
+                            <Products />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/products/create" exact>
+                            <ProductDetail />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/products/:id" exact>
+                            <ProductDetail />
                         </PrivateRoute>
 
                         <Route path="/error-401" exact component={Error401} />

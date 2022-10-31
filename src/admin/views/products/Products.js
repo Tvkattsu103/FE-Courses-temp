@@ -12,8 +12,8 @@ import DataTable from "react-data-table-component";
 import CIcon from '@coreui/icons-react';
 import { cilPen } from "@coreui/icons";
 
-const Sliders = () => {
-    const [listSlider, setListSlider] = useState([]);
+const Products = () => {
+    const [listProduct, setListProduct] = useState([]);
     const [isModify, setIsModify] = useState(false);
     const [status, setStatus] = useState("");
     const [validTo, setValidTo] = useState("");
@@ -73,7 +73,7 @@ const Sliders = () => {
                     {(() => {
                         return (<CButton
                             className="mb-2"
-                            href={`/react/admin/sliders/${row?.id}`} color="primary"
+                            href={`/react/admin/products/${row?.id}`} color="primary"
                         >
                             <CIcon icon={cilPen}/>
                         </CButton>)
@@ -117,7 +117,7 @@ const Sliders = () => {
                 status: statusChange,
             };
 
-            const response = await adminApi.updateSlider(id, null, params);
+            const response = await adminApi.updateProduct(id, params);
             setIsModify(!isModify);
             toast.success(response?.message, {
                 duration: 2000,
@@ -129,10 +129,10 @@ const Sliders = () => {
         }
     }
 
-    const getListSlider = async () => {
+    const getListProduct = async () => {
         try {
-            const response = await adminApi.getAllSlider(status, validTo);
-            setListSlider(response);
+            const response = await adminApi.getAllProduct();
+            setListProduct(response);
             console.log(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
@@ -142,7 +142,7 @@ const Sliders = () => {
     };
 
     useEffect(() => {
-        getListSlider();
+        getListProduct();
     }, [isModify, status]);
 
     return (
@@ -172,16 +172,16 @@ const Sliders = () => {
                             style={{ backgroundColor: "#7367f0", border: "none", float: 'right' }}
                             onClick={() =>
                                 history.push(
-                                    "/admin/sliders/create"
+                                    "/admin/products/create"
                                 )
                             }
                         >
-                            Create New Slider
+                            Create New Product
                         </button>
                     </div>
                 </div>
                 <div className="body flex-grow-1 px-3">
-                    <DataTable columns={columns} data={listSlider} pagination />
+                    <DataTable columns={columns} data={listProduct} pagination />
                 </div>
 
                 <AppFooter />
@@ -190,4 +190,4 @@ const Sliders = () => {
     );
 };
 
-export default Sliders;
+export default Products;

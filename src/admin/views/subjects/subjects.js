@@ -74,7 +74,6 @@ function Subjects() {
   const [listSubject, setListSubject] = useState([]);
   const [nameSearch, setNameSearch] = useState();
   const [codeSearch, setCodeSearch] = useState();
-  console.log(Cookies?.get("access_token"));
   const role = JSON.parse(Cookies.get("user"))?.role;
   const [status, setStatus] = useState('');
   const [size, setSize] = useState(10);

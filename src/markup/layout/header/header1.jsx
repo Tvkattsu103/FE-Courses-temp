@@ -69,10 +69,10 @@ function Header() {
     }
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     setUser(Cookies.get("user") === undefined ? Cookies.get("user") : JSON.parse(Cookies.get("user")));
     dispatch(setEditAvatar(false));
-  },[editAvatar])
+  }, [editAvatar])
 
   const handleLogout = () => {
     Cookies.remove("id");
@@ -283,26 +283,15 @@ function Header() {
                   <li>
                     <Link to="/events">Events</Link>
                   </li>
-                  <li className="add-mega-menu">
-                    <Link to="#">
-                      Courses <i className="fa fa-chevron-down"></i>
+                  <li>
+                    <Link to="/products">
+                      Product
                     </Link>
-                    <ul className="sub-menu add-menu">
-                      <li className="add-menu-left">
-                        <h5 className="menu-adv-title">Our Courses</h5>
-                        <ul>
-                          <li>
-                            <Link to="/courses">Courses </Link>
-                          </li>
-                          <li>
-                            <Link to="/membership">Membership</Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li className="add-menu-right">
-                        <img src={adv} alt="" />
-                      </li>
-                    </ul>
+                  </li>
+                  <li>
+                    <Link to="/combo">
+                      Combo
+                    </Link>
                   </li>
                   <li>
                     <Link to="/blog">Blog</Link>

@@ -180,7 +180,6 @@ const Posts = () => {
         try {
             const response = await adminApi.getAllPost(title, status);
             setListPost(Object.values(response));
-            console.log(Object.values(response));
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,

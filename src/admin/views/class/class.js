@@ -74,7 +74,6 @@ function Class() {
     try {
       const response = await adminApi.getAllClass(name, status);
       setListClass(response);
-      console.log(response);
     } catch (responseError) {
       toast.error(responseError?.data.message, {
           duration: 7000,

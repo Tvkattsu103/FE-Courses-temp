@@ -56,8 +56,8 @@ export const userApi = {
         return axiosApi.get(url);
     },
 
-    getAllSlider: (status) => {
-        const url = `/api/slide/manage?status=${status}`;
+    getAllSlider: () => {
+        const url = `/api/slide/views`;
         return axiosApi.get(url);
     },
 };

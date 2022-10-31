@@ -161,4 +161,13 @@ export const adminApi = {
       }
     });
   },
+
+  getAllProduct: () => {
+    const url = `/api/package`;
+    return axiosApi.get(url);
+  },
+  updateProduct: (id, params) => {
+    const url = `/api/package/update?id=${id}`;
+    return axiosApi.post(url, params);
+  },
 };

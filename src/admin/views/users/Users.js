@@ -11,9 +11,11 @@ import {
   CFormInput,
   CFormSelect,
 } from "@coreui/react";
+import { useHistory } from "react-router-dom";
 
 const Users = () => {
   const [active, setActive] = useState();
+  const history = useHistory();
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
   function useOutsideAlerter(ref) {
@@ -58,7 +60,7 @@ const Users = () => {
             <AiOutlineDatabase color="#EA5455" />
           )}
           {row?.role?.replace("ROLE_", "") === "MANAGER" ||
-          row?.role?.replace("ROLE_", "") === "EXPERT" ? (
+            row?.role?.replace("ROLE_", "") === "EXPERT" ? (
             <FaDatabase color="#28C76F" />
           ) : (
             <></>
@@ -137,7 +139,7 @@ const Users = () => {
     } catch (responseError) {
       toast.error(responseError?.data.message, {
         duration: 7000,
-    });
+      });
     }
   };
   useEffect(() => {
@@ -190,7 +192,7 @@ const Users = () => {
                   setStatus(e.target.value);
                 }}
               >
-               <option value=""></option>
+                <option value=""></option>
                 <option value={true}>Active</option>
                 <option value={false}>Inactive</option>
               </CFormSelect>
@@ -207,7 +209,7 @@ const Users = () => {
                 setSize(e.target.value)
               }}
             >
-         <option value=""></option>
+              <option value=""></option>
               <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
@@ -223,7 +225,13 @@ const Users = () => {
               onChange={onSearchUser}
               style={{ width: "550px" }}
             />
-            <button style={{ backgroundColor: "#7367f0", border: "none" }}>
+            <button style={{ backgroundColor: "#7367f0", border: "none" }}
+              onClick={() =>
+                history.push(
+                  "/admin/users/create"
+                )
+              }
+            >
               Add User
             </button>
           </div>
