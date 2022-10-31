@@ -1,10 +1,4 @@
 import React, { useEffect } from "react";
-import {
-  CDropdown,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdownDivider,
-} from "@coreui/react";
 import { CFormSelect } from "@coreui/react";
 import { setValueFilter } from "../../../../redux/reducers/user";
 import { useDispatch, useSelector } from "react-redux";

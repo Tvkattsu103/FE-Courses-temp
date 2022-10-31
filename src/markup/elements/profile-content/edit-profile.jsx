@@ -3,6 +3,8 @@ import toast from "react-hot-toast";
 import { userApi } from "../../../api/userApi";
 import avatarProfile from '../../../images/icon/avatar.svg'
 import Cookies from "js-cookie";
+import { useSelector, useDispatch } from "react-redux";
+import { setEditAvatar } from "../../../redux/reducers/user";
 
 function EditProfile({ stateChanger, state, user }) {
     const [fullname, setFullname] = useState();
@@ -13,6 +15,8 @@ function EditProfile({ stateChanger, state, user }) {
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertType, setPopupAlertType] = useState("primary");
     const acceptedFileType = ["image/jpg", "image/png", "image/jpeg"];
+    const dispatch = useDispatch();
+    const editAvatar = useSelector((state) => state.userReducers.editAvatar);
 
     const handleChangeProfile = async () => {
         try {
@@ -50,6 +54,7 @@ function EditProfile({ stateChanger, state, user }) {
             toast.success("update sucessfully", {
                 duration: 2000,
             });
+            dispatch(setEditAvatar(true));
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -58,7 +63,7 @@ function EditProfile({ stateChanger, state, user }) {
     };
 
     useEffect(() => {
-        console.log(user?.avatar);
+        console.log(editAvatar);
     })
 
     return (

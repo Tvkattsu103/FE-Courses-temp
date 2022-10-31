@@ -33,7 +33,6 @@ function UserDetail(props) {
         try {
             const response = await adminApi.getListRole();
             setListRole(response);
-            console.log(response);
         } catch (responseError) {
             console.log(responseError);
         }
@@ -47,7 +46,6 @@ function UserDetail(props) {
         try {
             const response = await adminApi.getUserById(id);
             setUser(response);
-            console.log(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -68,10 +66,7 @@ function UserDetail(props) {
                 password: password,
             };
             if (option !== user.role && option !== undefined) {
-                const response = await adminApi.updateRoleUser(params);
-                toast.success(response?.message, {
-                    duration: 2000,
-                });
+                await adminApi.updateRoleUser(params);
             }
             const responseProfile = await adminApi.updateUserProfile(
                 paramsProfile,
@@ -184,7 +179,18 @@ function UserDetail(props) {
                                         defaultValue={user?.role}
                                     >
                                         {listRole?.map((item, index) => {
-                                            return (
+                                            return user?.role === item?.setting_value ? (
+                                                <option
+                                                    key={index}
+                                                    value={item?.setting_value}
+                                                    selected
+                                                >
+                                                    {item?.setting_value?.replace(
+                                                        "ROLE_",
+                                                        ""
+                                                    )}
+                                                </option>
+                                            ) : (
                                                 <option
                                                     key={index}
                                                     value={item?.setting_value}
