@@ -126,6 +126,9 @@ hr {
   margin: 1rem 0 !important;
 }
 
+.dropdown-menu.show {
+  text-align: center;
+}
 @media (min-width: 767px) {
   .topbar-center,
   .topbar-left,

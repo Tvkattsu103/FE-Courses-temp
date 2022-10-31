@@ -1,64 +1,49 @@
-import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import Slider from "react-slick";
+import { userApi } from '../../../api/userApi';
 
-// Images
-import Image1 from "../../../images/slider/slide1.jpg"
-import Image2 from "../../../images/slider/slide2.jpg"
+function Slider1() {
+	const [listSlider, setListSlider] = useState([]);
 
-class Slider1 extends Component{
-	
-	render(){
-		
-		const settings = {
-			dots: false,
-			infinite: true,
-			speed: 1000,
-			slidesToShow: 1,
-			slidesToScroll: 1,
-		};
-		
-		return(
-			<>
-				
-				<Slider {...settings} className="tt-slider slider-one slider-sp0">
+	const getListSlider = async () => {
+		try {
+			const response = await userApi.getAllSlider(1);
+			setListSlider(response);
+			console.log(response);
+		} catch (responseError) {
+			console.log(responseError);
+		}
+	};
+
+	const settings = {
+		dots: false,
+		infinite: true,
+		speed: 1000,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		autoplay: true,
+		autoplaySpeed: 3000,
+	};
+
+	useEffect(() => {
+		getListSlider();
+	}, []);
+
+	return (
+		<>
+
+			<Slider {...settings} className="tt-slider slider-one slider-sp0">
+				{listSlider.map(slider => (
 					<div className="slider-item">
-						<div className="slider-thumb ovbl-dark">
-							<img src={Image1} alt=""/>
+						<div className="slider-thumb">
+							<img src={slider?.imageUrl} alt="" />
 						</div>
-						<div className="slider-content text-white">
-							<div className="container">
-								<div className="content-inner">
-									<h6 className="sub-title">Welcome To University </h6>
-									<h2 className="title">Master the Skills to Drive your Career.</h2>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the</p>
-									<Link className="btn radius-xl m-r15 button-md white" to="/contact-1">Contact Us</Link>
-									<Link className="btn radius-xl button-md" to="/about-1">Read More</Link>
-								</div>
-							</div>
-						</div>
-					</div>			
-					<div className="slider-item">
-						<div className="slider-thumb ovbl-dark">
-							<img src={Image2} alt=""/>
-						</div>
-						<div className="slider-content text-white">
-							<div className="container">
-								<div className="content-inner">
-									<h6 className="sub-title">Welcome To University </h6>
-									<h2 className="title">Master the Skills to Drive your Career.</h2>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the</p>
-									<Link className="btn radius-xl m-r15 button-md white" to="/contact-1">Contact Us</Link>
-									<Link className="btn radius-xl button-md" to="/about-1">Read More</Link>
-								</div>
-							</div>
-						</div>
-					</div>					
-				</Slider>
-				
-			</>
-		);
-	}
+					</div>
+				))}
+			</Slider>
+
+		</>
+	);
 }
 
 export default Slider1;

@@ -20,8 +20,8 @@ const BlogClassicSidebar = () => {
 
 	const getListPost = async () => {
         try {
-            const response = await userApi.getAllPost("","");
-            setListPost(response.filter((item) => item?.status === 2));
+            const response = await userApi.getAllPost("",2);
+            setListPost(response);
         } catch (responseError) {
             console.log(responseError);
         }

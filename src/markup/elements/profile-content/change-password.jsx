@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import Cookies from "js-cookie";
 import { userApi } from "../../../api/userApi";
 
 function ChangePassword(props) {
@@ -10,7 +11,7 @@ function ChangePassword(props) {
     const [alertType, setPopupAlertType] = useState("primary");
 
     const handleChangeProfile = async () => {
-        if ((password !== "") & (password !== rePassword)) {
+        if ((password !== "") && (password !== rePassword)) {
             setAlertMessage("re input password wrong");
             setAlertVisible(true);
             setPopupAlertType("danger");
@@ -21,7 +22,8 @@ function ChangePassword(props) {
             const param = {
                 password: password,
             };
-            const response = await userApi.updateInfo(param);
+            const id = Cookies.get("id");
+            const response = await userApi.updateInfo(param, id);
             setAlertMessage(response?.message);
             setAlertVisible(true);
             setPopupAlertType("success");
@@ -29,9 +31,9 @@ function ChangePassword(props) {
                 duration: 2000,
             });
         } catch (responseError) {
-            toast.error(responseError?.data.message, {
-                duration: 7000,
-            });
+            setAlertMessage(responseError?.data.message);
+            setAlertVisible(true);
+            setPopupAlertType("danger");
         }
     };
 

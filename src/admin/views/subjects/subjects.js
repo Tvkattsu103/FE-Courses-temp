@@ -1,21 +1,9 @@
-import { cilPeople } from "@coreui/icons";
-import CIcon from "@coreui/icons-react";
 import {
-  CAvatar,
   CButton,
   CFormInput,
-  CInputGroup,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
   CFormSelect,
 } from "@coreui/react";
 import Styles from "./style.module.scss";
-import InputSearch from "../../components/common/inputSearch/InputSearch";
-import DropdownSearch from "../../components/common/dropdownSearch/DropdownSearch";
 import Cookies from "js-cookie";
 import React from "react";
 import { useEffect } from "react";

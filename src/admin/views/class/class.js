@@ -1,6 +1,5 @@
-import { CButton, CFormInput, CInputGroup, CFormSelect } from "@coreui/react";
+import { CButton, CFormInput, CFormSelect } from "@coreui/react";
 import Cookies from "js-cookie";
-import moment from "moment/moment";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -75,6 +74,7 @@ function Class() {
     try {
       const response = await adminApi.getAllClass(name, status);
       setListClass(response);
+      console.log(response);
     } catch (responseError) {
       toast.error(responseError?.data.message, {
           duration: 7000,

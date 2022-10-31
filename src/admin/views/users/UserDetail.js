@@ -10,42 +10,30 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
-import { userApi } from "../../../api/userApi";
 import {
     AppFooter,
     AppHeader,
     AppSidebar,
-    DocsExample,
 } from "../../components";
 
 function UserDetail(props) {
     const [listRole, setListRole] = useState([]);
-    const [listUser, setListUser] = useState([]);
     const [user, setUser] = useState({});
     const [fullname, setFullname] = useState();
     const [phone, setPhone] = useState();
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const location = useLocation();
+    const history = useHistory();
     const [option, setOption] = useState();
-
-    const getListUser = async () => {
-        try {
-            const response = await adminApi.getListUser();
-            setListUser(response);
-        } catch (responseError) {
-            toast.error(responseError?.data.message, {
-                duration: 7000,
-            });
-        }
-    };
 
     const getListRole = async () => {
         try {
             const response = await adminApi.getListRole();
             setListRole(response);
+            console.log(response);
         } catch (responseError) {
             console.log(responseError);
         }
@@ -59,6 +47,7 @@ function UserDetail(props) {
         try {
             const response = await adminApi.getUserById(id);
             setUser(response);
+            console.log(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -91,15 +80,15 @@ function UserDetail(props) {
             toast.success(responseProfile?.message, {
                 duration: 2000,
             });
-            getUserById();
+            history.push("/admin/users");
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
             });
+            console.log(responseError);
         }
     };
     useEffect(() => {
-        getListUser();
         getListRole();
         getUserById();
     }, []);
@@ -192,25 +181,15 @@ function UserDetail(props) {
                                         onChange={(e) =>
                                             setOption(e.target.value)
                                         }
+                                        defaultValue={user?.role}
                                     >
                                         {listRole?.map((item, index) => {
-                                            return user?.role === item?.name ? (
+                                            return (
                                                 <option
                                                     key={index}
-                                                    value={item?.name}
-                                                    selected
+                                                    value={item?.setting_value}
                                                 >
-                                                    {item?.name?.replace(
-                                                        "ROLE_",
-                                                        ""
-                                                    )}
-                                                </option>
-                                            ) : (
-                                                <option
-                                                    key={index}
-                                                    value={item?.name}
-                                                >
-                                                    {item?.name?.replace(
+                                                    {item?.setting_value?.replace(
                                                         "ROLE_",
                                                         ""
                                                     )}

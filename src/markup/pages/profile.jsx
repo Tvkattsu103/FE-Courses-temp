@@ -26,7 +26,7 @@ function Profile(props) {
         try {
             const response = await userApi.getUserDetail();
             setUser(response);
-            
+
         } catch (responseError) {
             console.log(responseError);
         }
@@ -72,8 +72,10 @@ function Profile(props) {
                                                 <div className="user-profile-thumb ">
                                                     <img
                                                         src={
-                                                            user?.avatar &&
-                                                            avatarProfile
+                                                            user?.avatar ?
+                                                                user?.avatar.substr("http://localhost:8080/api/account/downloadFile/".length) !== "null"
+                                                                    ? user?.avatar
+                                                                    : avatarProfile : avatarProfile
                                                         }
                                                         className="w-100 h-100"
                                                         alt=""

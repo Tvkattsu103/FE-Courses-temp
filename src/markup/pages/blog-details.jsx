@@ -67,7 +67,7 @@ function BlogDetails(prop) {
 								<div className="col-lg-9 col-xl-9 col-md-7">
 									<div className="recent-news blog-lg">
 										<div className="action-box blog-lg">
-											<img src={blogPic1} alt="" />
+											<img src={post?.thumnailUrl} alt="" />
 										</div>
 										<div className="info-bx">
 											<ul className="media-post">

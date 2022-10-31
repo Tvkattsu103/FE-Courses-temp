@@ -4214,6 +4214,7 @@ footer .pt-social-link ul li {
 .tt-slider {
     position: relative;
     overflow: hidden;
+    
 }
 .tt-slider .slider-item {
     position: relative;
@@ -4224,7 +4225,9 @@ footer .pt-social-link ul li {
     object-fit: cover;
 }
 .tt-slider .slider-thumb {
-    height: 850px;
+    width: 80%;
+    margin: auto;
+    height: 550px;
 }
 .tt-slider .slider-content {
     position: absolute;

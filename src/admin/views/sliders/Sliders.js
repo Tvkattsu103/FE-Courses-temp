@@ -41,7 +41,7 @@ const Sliders = () => {
         {
             name: "Valid To",
             maxWidth: '160px',
-            selector: (row) => row?.validTo.substring(0,10),
+            selector: (row) => new Date(row?.validTo).toLocaleDateString(),
             sortable: true,
         },
         {
@@ -134,6 +134,7 @@ const Sliders = () => {
         try {
             const response = await adminApi.getAllSlider(status, validTo);
             setListSlider(response);
+            console.log(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,

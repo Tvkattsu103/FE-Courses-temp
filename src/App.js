@@ -4,7 +4,7 @@ import Markup from "./markup/markup";
 import "./App.css";
 
 // Plugins Stylesheet
-import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Slick Carousel
 import "slick-carousel/slick/slick.css";

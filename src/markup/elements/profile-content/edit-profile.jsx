@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { userApi } from "../../../api/userApi";
 import avatarProfile from '../../../images/icon/avatar.svg'
 import Cookies from "js-cookie";
@@ -56,6 +56,10 @@ function EditProfile({ stateChanger, state, user }) {
             });
         }
     };
+
+    useEffect(() => {
+        console.log(user?.avatar);
+    })
 
     return (
         <>
@@ -133,7 +137,11 @@ function EditProfile({ stateChanger, state, user }) {
                         <div className="col-12 col-sm-8 col-md-8 col-lg-7">
                             <img
                                 style={{ width: "100px", height: "100px" }}
-                                src={user?.avatar && avatarProfile}
+                                src={
+                                    user?.avatar ?
+                                        user?.avatar.substr("http://localhost:8080/api/account/downloadFile/".length) !== "null"
+                                            ? user?.avatar
+                                            : avatarProfile : avatarProfile}
                                 alt=""
                             />
                         </div>

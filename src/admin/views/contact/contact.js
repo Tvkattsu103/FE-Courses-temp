@@ -11,7 +11,7 @@ import {
 } from "@coreui/react";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import CIcon from "@coreui/icons-react";
-import { cibCcMastercard, cifUs, cilPeople } from "@coreui/icons";
+import { cibCcMastercard, cifUs, cilPen, cilPeople } from "@coreui/icons";
 import avatar1 from "../../assets/images/avatars/1.jpg";
 import { Link, useHistory } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
@@ -173,17 +173,6 @@ const Contact = () => {
                                                 {item?.status
                                                     ? "Resolved"
                                                     : "Not Resolved"}
-                                            </CButton>
-                                        </div>
-                                        <div className="mr-2">
-                                            <CButton
-                                                color="danger"
-                                                style={{ width: "135px" }}
-                                                onClick={() =>
-                                                    handleDeleteContact(item)
-                                                }
-                                            >
-                                                Delete
                                             </CButton>
                                         </div>
                                     </CTableDataCell>

@@ -46,6 +46,7 @@ function PostDetail(props) {
         try {
             const response = await adminApi.getPostById(id);
             setPost(response);
+            setStatus(response.status);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,

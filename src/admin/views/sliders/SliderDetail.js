@@ -15,7 +15,6 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useHistory, useLocation } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
-import { userApi } from "../../../api/userApi";
 import {
     AppFooter,
     AppHeader,
@@ -45,6 +44,7 @@ function SliderDetail(props) {
             const response = await adminApi.getSliderById(id);
             setSlider(response);
             setValidTo(response?.validTo);
+            setStatus(response.status);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -80,6 +80,12 @@ function SliderDetail(props) {
         const previewUrl = URL.createObjectURL(fileDropped);
         setPreview(previewUrl);
     }
+
+    const optionStatus = [
+        { status: 0, label: "Draft" },
+        { status: 1, label: "Published" },
+        { status: 2, label: "Achieved" },
+    ];
 
     useEffect(() => {
         if (type === 1) {
@@ -160,9 +166,36 @@ function SliderDetail(props) {
                                                 onChange={(e) => setStatus(e.target.value)}
                                                 disabled={type !== 1}
                                             >
-                                                <option value="0">Draft</option>
-                                                <option value="1">Published</option>
-                                                <option value="2">Achieved</option>
+                                                {optionStatus?.map((item, index) => {
+                                                    if (type === 1) {
+                                                        return slider?.status ===
+                                                            item?.status ? (
+                                                            <option
+                                                                key={index}
+                                                                value={item?.status}
+                                                                selected
+                                                            >
+                                                                {item?.label}
+                                                            </option>
+                                                        ) : (
+                                                            <option
+                                                                key={index}
+                                                                value={item?.status}
+                                                            >
+                                                                {item?.label}
+                                                            </option>
+                                                        );
+                                                    } else {
+                                                        return (
+                                                            <option
+                                                                key={index}
+                                                                value={item?.status}
+                                                            >
+                                                                {item?.label}
+                                                            </option>
+                                                        );
+                                                    }
+                                                })}
                                             </CFormSelect>
                                         </div>
                                     </CCol>

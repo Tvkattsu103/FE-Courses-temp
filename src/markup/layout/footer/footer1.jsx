@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
 import GoogleMapReact from "google-map-react";

@@ -5,21 +5,11 @@ import { adminApi } from "../../../api/adminApi";
 import toast, { Toaster } from "react-hot-toast";
 import Styles from "./style.module.scss";
 import DataTable from "react-data-table-component";
-import InputSearch from "../../components/common/inputSearch/InputSearch";
-import DropdownSearch from "../../components/common/dropdownSearch/DropdownSearch";
-import { cibCloudflare } from "@coreui/icons";
 import { AiOutlineUser, AiOutlineDatabase } from "react-icons/ai";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaDatabase } from "react-icons/fa";
-import CIcon from "@coreui/icons-react";
 import {
-  CDropdown,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdownDivider,
   CFormInput,
   CFormSelect,
-  CDropdownToggle,
 } from "@coreui/react";
 
 const Users = () => {

@@ -40,6 +40,7 @@ function ClassDetail(props) {
             setSubject(response);
             setDateFrom(response?.dateFrom);
             setDateTo(response?.dateTo);
+            console.log(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,

@@ -7,7 +7,6 @@ import logo from "../../../images/logo.png";
 import adv from "../../../images/adv/adv.jpg";
 import Cookies from "js-cookie";
 import { CAvatar } from "@coreui/react";
-import avatar1 from "../../../admin/assets/images/avatars/1.jpg";
 import avatarProfile from '../../../images/icon/avatar.svg'
 
 class Header extends Component {
@@ -15,13 +14,16 @@ class Header extends Component {
     super(props);
     this.state = {
       id: Cookies.get("id"),
-      user: Cookies.get("user"),
+      user: Cookies.get("user") === undefined ? Cookies.get("user") : JSON.parse(Cookies.get("user")),
       role: Cookies.get("roles"),
       isExpand: false,
       acceptRole: ["ROLE_ADMIN", "ROLE_SUPPORTER", "ROLE_MANAGER"],
     };
   }
   componentDidMount() {
+    // console.log(JSON.parse({"id":1}));
+    console.log(JSON.parse(Cookies.get("user")));
+    console.log(this.state.user.avatar);
     // Search Form Popup
     var searchBtn = document.getElementById("quik-search-btn");
     var searchForm = document.querySelector(".nav-search-bar");
@@ -68,10 +70,9 @@ class Header extends Component {
         console.log("close");
       }
     }
-    if (this.state.user !== undefined) {
-      this.setState({ user: JSON.parse(this.state.user) });
-      console.log(JSON.parse(this.state.user));
-    }
+    // if (this.state.user !== undefined) {
+    //   this.setState({ user: JSON.parse(this.state.user) });
+    // }
   }
 
   handleLogout() {
@@ -126,7 +127,12 @@ class Header extends Component {
                           }
                           className="mb-0"
                         >
-                          <CAvatar src={this.state.user?.avatar && avatarProfile} />
+                          <CAvatar src={
+                            this.state.user?.avatar ?
+                              this.state.user?.avatar.substr("http://localhost:8080/api/account/downloadFile/".length) !== "null"
+                                ? this.state.user?.avatar
+                                : avatarProfile : avatarProfile}
+                          />
                         </div>
                         <ul
                           className="sub-menu"
@@ -156,19 +162,24 @@ class Header extends Component {
                               </li>
                             </Link>
                           ) : this.state.role === "ROLE_MANAGER" ? (
-                            <Link to="/admin/subjects"><li>
-                              Admin
-                            </li>
+                            <Link to="/admin/subjects">
+                              <li>
+                                Admin
+                              </li>
                             </Link>
                           ) : (
                             ""
                           )}
-                          <li>
-                            <Link to="/profile">User Profile</Link>
-                          </li>
-                          <li>
-                            <Link to="/profile">Change Password</Link>
-                          </li>
+                          <Link to="/profile">
+                            <li>
+                              User Profile
+                            </li>
+                          </Link>
+                          <Link to="/profile">
+                            <li>
+                              Change Password
+                            </li>
+                          </Link>
                           <li onClick={this.handleLogout.bind(this)}>Logout</li>
                         </ul>
                       </li>

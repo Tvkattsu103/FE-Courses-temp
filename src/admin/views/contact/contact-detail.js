@@ -10,7 +10,7 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import { userApi } from "../../../api/userApi";
 import {
@@ -24,10 +24,10 @@ function ContactDetail(props) {
     const [contact, setContact] = useState();
     const [fullname, setFullname] = useState();
     const [email, setEmail] = useState();
-    const [address, setAddress] = useState();
+    const [category, setCategory] = useState();
     const [phone, setPhone] = useState();
     const [comment, setComment] = useState();
-    const [hasUpdate, setHasUpdate] = useState(false);
+    const history = useHistory();
     const location = useLocation();
     const id = location.pathname.substring(
         "/admin/contact/".length,
@@ -46,13 +46,13 @@ function ContactDetail(props) {
                 email: email,
                 phoneNumber: phone,
                 message: comment,
-                address: address,
+                category: category,
             };
             const response = await adminApi.updateContact(params, id);
-            setHasUpdate(!hasUpdate);
             toast.success(response?.message, {
                 duration: 2000,
             });
+            history.push('/admin/contact');
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -62,7 +62,7 @@ function ContactDetail(props) {
 
     useEffect(() => {
         getContactById();
-    }, [hasUpdate]);
+    }, []);
 
     return (
         <div>
@@ -106,14 +106,14 @@ function ContactDetail(props) {
                                 </div>
                                 <div className="mb-3">
                                     <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Address
+                                        Category
                                     </CFormLabel>
                                     <CFormInput
                                         type="email"
                                         id="exampleFormControlInput1"
-                                        defaultValue={contact?.address}
+                                        defaultValue={contact?.category}
                                         onChange={(e) =>
-                                            setAddress(e.target.value)
+                                            setCategory(e.target.value)
                                         }
                                     />
                                 </div>

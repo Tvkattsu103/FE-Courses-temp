@@ -55,4 +55,9 @@ export const userApi = {
         const url = `/api/post/${id}`;
         return axiosApi.get(url);
     },
+
+    getAllSlider: (status) => {
+        const url = `/api/slide/manage?status=${status}`;
+        return axiosApi.get(url);
+    },
 };
