@@ -21,8 +21,6 @@ import {
     AppSidebar,
     DocsExample,
 } from "../../components";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 function SliderDetail(props) {
     const [slider, setSlider] = useState();
