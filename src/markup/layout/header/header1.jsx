@@ -21,9 +21,6 @@ class Header extends Component {
     };
   }
   componentDidMount() {
-    // console.log(JSON.parse({"id":1}));
-    console.log(JSON.parse(Cookies.get("user")));
-    console.log(this.state.user.avatar);
     // Search Form Popup
     var searchBtn = document.getElementById("quik-search-btn");
     var searchForm = document.querySelector(".nav-search-bar");
