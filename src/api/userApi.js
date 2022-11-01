@@ -46,8 +46,8 @@ export const userApi = {
     },
 
     //Blog
-    getAllPost: (title, status) => {
-        const url = `/api/post?title=${title}&status=${status}`;
+    getAllPost: () => {
+        const url = `/api/post/views`;
         return axiosApi.get(url);
     },
 
@@ -58,6 +58,15 @@ export const userApi = {
 
     getAllSlider: () => {
         const url = `/api/slide/views`;
+        return axiosApi.get(url);
+    },
+
+    getListCategoryWebContact: () => {
+        const url = `/api/admin/setting/list-category-WebContact`;
+        return axiosApi.get(url);
+    },
+    getListCategoryPost: () => {
+        const url = `/api/admin/setting/list-category-post`;
         return axiosApi.get(url);
     },
 };

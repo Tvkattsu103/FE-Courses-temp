@@ -12,9 +12,13 @@ import Styles from "./style.module.scss";
 import DataTable from "react-data-table-component";
 import CIcon from '@coreui/icons-react';
 import { cilPen } from "@coreui/icons";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const Posts = () => {
     const [listPost, setListPost] = useState([]);
+    const [listCategory, setListCategory] = useState([]);
+    const [category, setCategory] = useState("");
     const [isModify, setIsModify] = useState(false);
     const [status, setStatus] = useState("");
     const [title, setTitle] = useState("");
@@ -61,12 +65,28 @@ const Posts = () => {
             sortable: true,
         },
         {
+            name: "Category",
+            maxWidth: '200px',
+            selector: (row) => (
+                <>
+                    <div>
+                        {listCategory.map((category) => {
+                            return category?.setting_id === row.categoryId
+                                ? category.setting_title
+                                : ""
+                        })
+                        }
+                    </div>
+                </>
+            ),
+            sortable: true,
+        },
+        {
             name: "Status",
             maxWidth: '160px',
             selector: (row) => (
                 <>
                     <div className={` ${row?.status !== 4 ? Styles.active : Styles.inactive}`} style={{ textAlign: 'center' }}>
-                        {/* {row.status ? "Active" : "Inactive"} */}
                         {(() => {
                             if (row?.status === 0) {
                                 return (<>Draft</>)
@@ -98,7 +118,7 @@ const Posts = () => {
                                 className="mb-2"
                                 color="success"
                                 onClick={() =>
-                                    handleUpdateStatus(row, 0)
+                                    submit(row, 0)
                                 }
                             >
                                 Approve
@@ -108,7 +128,7 @@ const Posts = () => {
                                 className="mb-2"
                                 href={`/react/admin/posts/${row?.id}`} color="primary"
                             >
-                                <CIcon icon={cilPen}/>
+                                <CIcon icon={cilPen} />
                             </CButton>)
                         }
                     })()}
@@ -176,37 +196,47 @@ const Posts = () => {
         }
     }
 
+    const submit = (row, type) => {
+
+        confirmAlert({
+            title: 'Confirm to change status',
+            message: 'Are you sure to do this.',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => handleUpdateStatus(row, type)
+                },
+                {
+                    label: 'No',
+                    //onClick: () => alert('Click No')
+                }
+            ]
+        });
+    }
+
     const getListPost = async () => {
         try {
             const response = await adminApi.getAllPost(title, status);
             setListPost(Object.values(response));
+            console.log(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
             });
         }
     };
-    // const handleUpdateStatus = async (e) => {
-    //     try {
-    //         const params = {
-    //             status: e.status,
-    //         };
-    //         if (e.status === 'Draft') {
 
-    //         } else {
+    const getListCategory = async () => {
+        try {
+            const response = await adminApi.getListCategoryPost();
+            setListCategory(response);
+        } catch (responseError) {
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
+        }
+    };
 
-    //         }
-    //         const response = await adminApi.updateStatusPost(params, e?.id);
-    //         toast.success(response?.message, {
-    //             duration: 2000,
-    //         });
-    //         setIsModify(!isModify);
-    //     } catch (responseError) {
-    //         toast.error(responseError, {
-    //             duration: 2000,
-    //         });
-    //     }
-    // };
     const onSearch = (e) => {
         setTitle(e.target.value);
     }
@@ -221,7 +251,11 @@ const Posts = () => {
 
     useEffect(() => {
         getListPost();
-    }, [isModify, status, title]);
+    }, [isModify, status, title, category]);
+
+    useEffect(() => {
+        getListCategory();
+    }, [])
 
     return (
         <div>
@@ -231,34 +265,25 @@ const Posts = () => {
                 <AppHeader />
 
                 <div className={Styles.searchParams}>
-                    {/* <div className={Styles.showEntry}>
-                        <div>Show</div>
-                        <CFormSelect
-                            aria-label="Default select example"
-                            style={{ height: "35px", margin: "0px 10px" }}
-                            onChange={(e) => {
-                                // setSize(e.target.value);
-                            }}
-                        >
-                            <option></option>
-                            <option value="10">10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </CFormSelect>
-                        <div>entries</div>
-                    </div> */}
                     <div className={Styles.showEntry}>
                         <CFormSelect
                             aria-label="Default select example"
-                            style={{ margin: "0px 0px", width: "140px" }}
+                            style={{ margin: "0px 0px", width: "180px" }}
                             onChange={(e) => {
-                                // setStatus(e.target.value);
+                                setCategory(e.target.value);
                             }}
                         >
-                            <option value="">Category</option>
-                            <option value={true}>Active</option>
-                            <option value={false}>Inactive</option>
+                            <option value="">All Category</option>
+                            {listCategory?.map((item, index) => {
+                                return (
+                                    <option
+                                        key={index}
+                                        value={item?.setting_id}
+                                    >
+                                        {item?.setting_title}
+                                    </option>
+                                );
+                            })}
                         </CFormSelect>
                         <CFormSelect
                             aria-label="Default select example"
@@ -267,7 +292,7 @@ const Posts = () => {
                                 setStatus(e.target.value);
                             }}
                         >
-                            <option value="">Status</option>
+                            <option value="">All Status</option>
                             {optionStatus?.map((item, index) => {
                                 return (
                                     <option

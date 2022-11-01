@@ -14,22 +14,25 @@ import { CCard, CRow, CCol, CCardImage, CCardBody, CCardTitle, CCardText } from 
 import { CButton } from '@coreui/react';
 import { userApi } from './../../api/userApi';
 import ReactHtmlParser from 'react-html-parser'
+import { useSelector } from 'react-redux';
 
 const BlogClassicSidebar = () => {
 	const [listPost, setListPost] = useState([]);
+	const searchBlog = useSelector((state) => state.blogReducers.search);
 
 	const getListPost = async () => {
-        try {
-            const response = await userApi.getAllPost("",2);
-            setListPost(response);
-        } catch (responseError) {
-            console.log(responseError);
-        }
-    };
+		console.log(searchBlog);
+		try {
+			const response = await userApi.getAllPost();
+			setListPost(response.filter(res => res.title.toLowerCase().includes(searchBlog.toLowerCase())));
+		} catch (responseError) {
+			console.log(responseError);
+		}
+	};
 
 	useEffect(() => {
-        getListPost();
-    }, []);
+		getListPost();
+	}, [searchBlog]);
 
 	return (
 		<>
@@ -64,37 +67,44 @@ const BlogClassicSidebar = () => {
 								</div>
 								<div className="col-lg-9 col-xl-9 col-md-7">
 									<CRow className="g-0">
-										{listPost.map((item) => (
-											<>
-												<CCol md={3}>
-													<CCardImage src={item?.thumnailUrl} />
-												</CCol>
-												<CCol md={9}>
-													<CCardTitle><Link to={`/blog/${item?.id}`}>{item?.title}</Link></CCardTitle>
-													<CCardText>
-														<ul className="media-post">
-															<li><i className="fa fa-calendar"></i>{" "+item?.createDate.substring(0,11)}</li>
-															<li><i className="fa fa-user"></i> By {item?.author.fullname}</li>
-														</ul>
-													</CCardText>
-													<CCardText>
-														{ReactHtmlParser(item?.body)}
-													</CCardText>
-													<CButton><Link to={`/blog/${item?.id}`}>Read more</Link></CButton>
-												</CCol>
-												<hr />
-											</>
-										))}
+										{
+											listPost.map((item) => (
+												<>
+													<CCol md={3}>
+														<CCardImage src={item?.thumnailUrl} />
+													</CCol>
+													<CCol md={9}>
+														<CCardTitle><Link to={`/blog/${item?.id}`}>{item?.title}</Link></CCardTitle>
+														<CCardText>
+															<ul className="media-post">
+																<li><i className="fa fa-calendar"></i>{" " + new Date(item?.createDate).toLocaleDateString()}</li>
+																<li><i className="fa fa-user"></i> By {item?.author.fullname}</li>
+															</ul>
+														</CCardText>
+														<CCardText>
+															{ReactHtmlParser(item?.body)}
+														</CCardText>
+														<CButton><Link to={`/blog/${item?.id}`}>Read more</Link></CButton>
+													</CCol>
+													<hr />
+												</>
+											))
+										}
 									</CRow>
-									<div className="pagination-bx rounded-sm gray m-b30 clearfix">
-										<ul className="pagination">
-											<li className="previous"><Link to="#"><i className="ti-arrow-left"></i> Prev</Link></li>
-											<li className="active"><Link to="#">1</Link></li>
-											<li><Link to="#">2</Link></li>
-											<li><Link to="#">3</Link></li>
-											<li className="next"><Link to="#">Next <i className="ti-arrow-right"></i></Link></li>
-										</ul>
-									</div>
+									{
+										listPost.length !== 0
+											? (<><div className="pagination-bx rounded-sm gray m-b30 clearfix">
+												<ul className="pagination">
+													<li className="previous"><Link to="#"><i className="ti-arrow-left"></i> Prev</Link></li>
+													<li className="active"><Link to="#">1</Link></li>
+													<li><Link to="#">2</Link></li>
+													<li><Link to="#">3</Link></li>
+													<li className="next"><Link to="#">Next <i className="ti-arrow-right"></i></Link></li>
+												</ul>
+											</div></>)
+											: (<h5 style={{marginLeft: '50px'}}>Can't find any blog</h5>)
+									}
+
 								</div>
 
 							</div>

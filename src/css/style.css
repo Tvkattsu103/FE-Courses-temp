@@ -4225,9 +4225,9 @@ footer .pt-social-link ul li {
     object-fit: cover;
 }
 .tt-slider .slider-thumb {
-    width: 80%;
+    width: 50%;
     margin: auto;
-    height: 550px;
+    height: 350px;
 }
 .tt-slider .slider-content {
     position: absolute;

@@ -7,6 +7,8 @@ import {
     CFormInput,
     CFormLabel,
     CFormSelect,
+    CFormTextarea,
+    CRow,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -24,7 +26,6 @@ function UserDetail(props) {
     const [fullname, setFullname] = useState();
     const [phone, setPhone] = useState();
     const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
     const location = useLocation();
     const history = useHistory();
     const [option, setOption] = useState();
@@ -64,7 +65,6 @@ function UserDetail(props) {
                 username: username,
                 fullname: fullname,
                 phoneNumber: phone,
-                password: password,
             };
             if (option !== user.role && option !== undefined) {
                 await adminApi.updateRoleUser(params);
@@ -103,109 +103,130 @@ function UserDetail(props) {
                             <CCardHeader>
                                 <strong>Change User Info</strong>
                             </CCardHeader>
+
                             <CCardBody>
+                                <CRow className="g-3 mb-3">
+                                    <CCol sm={6}>
+                                        <div className="mb-3">
+                                            <CFormLabel htmlFor="exampleFormControlInput1">
+                                                Email
+                                            </CFormLabel>
+                                            <CFormInput
+                                                disabled
+                                                type="email"
+                                                id="exampleFormControlInput1"
+                                                placeholder="name@example.com"
+                                                defaultValue={user?.email}
+                                            />
+                                        </div>
+
+                                    </CCol>
+                                    <CCol sm={6}>
+                                    <div className="mb-3">
+                                        <CFormLabel htmlFor="exampleFormControlInput1">
+                                            Username
+                                        </CFormLabel>
+                                        <CFormInput
+                                            type="text"
+                                            id="exampleFormControlInput1"
+                                            placeholder=""
+                                            defaultValue={user?.username}
+                                            onChange={(e) =>
+                                                setUsername(e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                    </CCol>
+                                    <CCol sm={6}>
+                                    <div className="mb-3">
+                                        <CFormLabel htmlFor="exampleFormControlInput1">
+                                            Fullname
+                                        </CFormLabel>
+                                        <CFormInput
+                                            type="text"
+                                            id="exampleFormControlInput1"
+                                            placeholder=""
+                                            defaultValue={user?.fullname}
+                                            onChange={(e) =>
+                                                setFullname(e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                    </CCol>
+                                    <CCol sm={6}>
+                                    <div className="mb-3">
+                                        <CFormLabel htmlFor="exampleFormControlInput1">
+                                            Phone Number
+                                        </CFormLabel>
+                                        <CFormInput
+                                            type="text"
+                                            id="exampleFormControlInput1"
+                                            placeholder=""
+                                            defaultValue={user?.phoneNumber}
+                                            onChange={(e) =>
+                                                setPhone(e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                    </CCol>
+                                    <CCol sm={6}>
+                                    <div className="mb-3">
+                                        <CFormLabel htmlFor="formFile">
+                                            Set Roles. Click Ctrl to select multiple
+                                        </CFormLabel>
+                                        <CFormSelect
+                                            aria-label="Default select example"
+                                            onChange={(e) =>
+                                                setOption(e.target.value)
+                                            }
+                                            defaultValue={user?.role}
+                                        >
+                                            {listRole?.map((item, index) => {
+                                                return user?.role === item?.setting_value ? (
+                                                    <option
+                                                        key={index}
+                                                        value={item?.setting_value}
+                                                        selected
+                                                    >
+                                                        {item?.setting_value?.replace(
+                                                            "ROLE_",
+                                                            ""
+                                                        )}
+                                                    </option>
+                                                ) : (
+                                                    <option
+                                                        key={index}
+                                                        value={item?.setting_value}
+                                                    >
+                                                        {item?.setting_value?.replace(
+                                                            "ROLE_",
+                                                            ""
+                                                        )}
+                                                    </option>
+                                                );
+                                            })}
+                                        </CFormSelect>
+                                    </div>
+                                    </CCol>
+                                </CRow>
                                 <div className="mb-3">
                                     <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Email
+                                        Note (
+                                        <span style={{ color: "red" }}>*</span>)
                                     </CFormLabel>
-                                    <CFormInput
-                                        disabled
-                                        type="email"
-                                        id="exampleFormControlInput1"
-                                        placeholder="name@example.com"
-                                        defaultValue={user?.email}
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Username
-                                    </CFormLabel>
-                                    <CFormInput
+                                    <CFormTextarea id="exampleFormControlTextarea1" rows="3"></CFormTextarea>
+                                    {/* <CFormInput
                                         type="text"
                                         id="exampleFormControlInput1"
+                                        disabled={isNotAdmin}
                                         placeholder=""
-                                        defaultValue={user?.username}
-                                        onChange={(e) =>
-                                            setUsername(e.target.value)
+                                        defaultValue={
+                                            type === 1 ? subject?.note : ""
                                         }
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Password
-                                    </CFormLabel>
-                                    <CFormInput
-                                        type="text"
-                                        id="exampleFormControlInput1"
                                         onChange={(e) =>
-                                            setPassword(e.target.value)
+                                            setNote(e.target.value)
                                         }
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Fullname
-                                    </CFormLabel>
-                                    <CFormInput
-                                        type="text"
-                                        id="exampleFormControlInput1"
-                                        placeholder=""
-                                        defaultValue={user?.fullname}
-                                        onChange={(e) =>
-                                            setFullname(e.target.value)
-                                        }
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Phone Number
-                                    </CFormLabel>
-                                    <CFormInput
-                                        type="text"
-                                        id="exampleFormControlInput1"
-                                        placeholder=""
-                                        defaultValue={user?.phoneNumber}
-                                        onChange={(e) =>
-                                            setPhone(e.target.value)
-                                        }
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="formFile">
-                                        Set Roles. Click Ctrl to select multiple
-                                    </CFormLabel>
-                                    <CFormSelect
-                                        aria-label="Default select example"
-                                        onChange={(e) =>
-                                            setOption(e.target.value)
-                                        }
-                                        defaultValue={user?.role}
-                                    >
-                                        {listRole?.map((item, index) => {
-                                            return user?.role === item?.setting_value ? (
-                                                <option
-                                                    key={index}
-                                                    value={item?.setting_value}
-                                                    selected
-                                                >
-                                                    {item?.setting_value?.replace(
-                                                        "ROLE_",
-                                                        ""
-                                                    )}
-                                                </option>
-                                            ) : (
-                                                <option
-                                                    key={index}
-                                                    value={item?.setting_value}
-                                                >
-                                                    {item?.setting_value?.replace(
-                                                        "ROLE_",
-                                                        ""
-                                                    )}
-                                                </option>
-                                            );
-                                        })}
-                                    </CFormSelect>
+                                    /> */}
                                 </div>
                                 <div className="mb-3">
                                     <CButton

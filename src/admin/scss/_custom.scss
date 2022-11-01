@@ -129,6 +129,19 @@ hr {
 .dropdown-menu.show {
   text-align: center;
 }
+
+.react-confirm-alert-body h1{
+  font-size: 25px;
+}
+
+.react-confirm-alert-button-group {
+  justify-content: center;
+}
+
+.react-confirm-alert-button-group button:hover {
+  color:#212529;
+  background-color: #b1b7c1;
+}
 @media (min-width: 767px) {
   .topbar-center,
   .topbar-left,

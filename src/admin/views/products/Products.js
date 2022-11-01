@@ -11,6 +11,8 @@ import toast, { Toaster } from "react-hot-toast";
 import DataTable from "react-data-table-component";
 import CIcon from '@coreui/icons-react';
 import { cilPen } from "@coreui/icons";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const Products = () => {
     const [listProduct, setListProduct] = useState([]);
@@ -47,21 +49,9 @@ const Products = () => {
             name: "Status",
             maxWidth: '160px',
             selector: (row) => (
-                <>
-                    <div className={` ${row?.status !== 2 ? Styles.active : Styles.inactive}`} style={{ textAlign: 'center', width: '100px' }}>
-                        {(() => {
-                            if (row?.status === 0) {
-                                return (<>Draft</>)
-                            } else if (row?.status === 1) {
-                                return (<>Published</>)
-                            } else if (row?.status === 2) {
-                                return (<>Achieved</>)
-                            }
-                        })()}
-                    </div>
-                    <br />
-                    <div>{row?.createDate}</div>
-                </>
+                <div className={`${row?.status ? Styles.active : Styles.inactive}`}>
+                    {row.status ? "Active" : "Inactive"}
+                </div>
             ),
             sortable: true,
         },
@@ -75,7 +65,7 @@ const Products = () => {
                             className="mb-2"
                             href={`/react/admin/products/${row?.id}`} color="primary"
                         >
-                            <CIcon icon={cilPen}/>
+                            <CIcon icon={cilPen} />
                         </CButton>)
                     })()}
 
@@ -83,7 +73,7 @@ const Products = () => {
                     <CButton
                         color={row?.status === 1 ? "danger" : "warning"}
                         onClick={() =>
-                            handleUpdateStatus(row, 1)
+                            submit(row)
                         }
                     >{(() => {
                         if (row?.status === 0) {
@@ -101,7 +91,7 @@ const Products = () => {
         },
     ];
 
-    const handleUpdateStatus = async (row, type) => {
+    const handleUpdateStatus = async (row) => {
         let id = row.id;
         let status = row.status;
         let statusChange = -1;
@@ -128,6 +118,25 @@ const Products = () => {
             });
         }
     }
+
+    const submit = (row) => {
+
+        confirmAlert({
+            title: 'Confirm to change status',
+            message: 'Are you sure to do this.',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => handleUpdateStatus(row)
+                },
+                {
+                    label: 'No',
+                    //onClick: () => alert('Click No')
+                }
+            ]
+        });
+    }
+
 
     const getListProduct = async () => {
         try {

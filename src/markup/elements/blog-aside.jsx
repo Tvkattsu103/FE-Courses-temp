@@ -1,222 +1,154 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
-
-// Images
-import galleryPic1 from "../../images/gallery/pic1.jpg";
-import galleryPic2 from "../../images/gallery/pic2.jpg";
-import galleryPic3 from "../../images/gallery/pic3.jpg";
-import galleryPic4 from "../../images/gallery/pic4.jpg";
-import galleryPic5 from "../../images/gallery/pic5.jpg";
-import galleryPic7 from "../../images/gallery/pic7.jpg";
-import galleryPic8 from "../../images/gallery/pic8.jpg";
-import galleryPic9 from "../../images/gallery/pic9.jpg";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import blogPic1 from "../../images/blog/recent-blog/pic1.jpg";
 import blogPic2 from "../../images/blog/recent-blog/pic2.jpg";
 import blogPic3 from "../../images/blog/recent-blog/pic3.jpg";
+import { useDispatch } from 'react-redux';
+import { setSearch } from "../../redux/reducers/blog";
+import { useEffect } from "react";
+import { userApi } from "../../api/userApi";
 
-const content = [
-    {
-        thumb: galleryPic2,
-    },
-    {
-        thumb: galleryPic1,
-    },
-    {
-        thumb: galleryPic5,
-    },
-    {
-        thumb: galleryPic7,
-    },
-    {
-        thumb: galleryPic8,
-    },
-    {
-        thumb: galleryPic9,
-    },
-    {
-        thumb: galleryPic3,
-    },
-    {
-        thumb: galleryPic4,
-    },
-];
+function BlogAside() {
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const [listCategory, setListCategory] = useState([]);
+    const [recentBlog, setRecentBlog] = useState([]);
+    const [searchBlog, setSearchBlog] = useState("");
 
-const options = {
-    settings: {
-        overlayColor: "rgba(0,0,0,0.9)",
-        backgroundColor: "#FDC716",
-        slideAnimationType: "slide",
-    },
-    buttons: {
-        backgroundColor: "#f7b205",
-        iconColor: "rgba(255, 255, 255, 1)",
-        showDownloadButton: false,
-        showAutoplayButton: false,
-        showThumbnailsButton: false,
-    },
-    caption: {
-        captionColor: "#232eff",
-        captionFontFamily: "Raleway, sans-serif",
-        captionFontWeight: "300",
-        captionTextTransform: "uppercase",
-    },
-};
-
-class BlogAside extends Component {
-    render() {
-        return (
-            <>
-                <aside className="side-bar sticky-top">
-                    <div className="widget">
-                        <h6 className="widget-title">Search</h6>
-                        <div className="search-bx style-1">
-                            <form role="search">
-                                <div className="input-group">
-                                    <input
-                                        name="text"
-                                        className="form-control"
-                                        placeholder="Enter your keywords..."
-                                        type="text"
-                                    />
-                                    <span className="input-group-btn">
-                                        <button type="submit" className="btn">
-                                            <i className="fa fa-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div className="widget widget_archive">
-                        <h5 className="widget-title">List of Blogs</h5>
-                        <ul>
-                            <li className="active"><Link to="#">General</Link></li>
-                            <li><Link to="/courses-details">IT & Software</Link></li>
-                            <li><Link to="/courses-details">Photography</Link></li>
-                            <li><Link to="/courses-details">Programming Language</Link></li>
-                            <li><Link to="/courses-details">Technology</Link></li>
-                        </ul>
-                    </div>
-                    <div className="widget recent-posts-entry">
-                        <h6 className="widget-title">Recent Posts</h6>
-                        <div className="widget-post-bx">
-                            <div className="widget-post clearfix">
-                                <div className="ttr-post-media">
-                                    {" "}
-                                    <img
-                                        src={blogPic1}
-                                        width="200"
-                                        height="143"
-                                        alt=""
-                                    />{" "}
-                                </div>
-                                <div className="ttr-post-info">
-                                    <div className="ttr-post-header">
-                                        <h6 className="post-title">
-                                            <Link to="/blog-details">
-                                                This Story Behind Education Will
-                                                Haunt You Forever.
-                                            </Link>
-                                        </h6>
-                                    </div>
-                                    <ul className="media-post">
-                                        <li>
-                                            <Link to="/blog-details">
-                                                <i className="fa fa-calendar"></i>
-                                                Oct 23 2021
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div className="widget-post clearfix">
-                                <div className="ttr-post-media">
-                                    {" "}
-                                    <img
-                                        src={blogPic2}
-                                        width="200"
-                                        height="160"
-                                        alt=""
-                                    />{" "}
-                                </div>
-                                <div className="ttr-post-info">
-                                    <div className="ttr-post-header">
-                                        <h6 className="post-title">
-                                            <Link to="/blog-details">
-                                                What Will Education Be Like In
-                                                The Next 50 Years?
-                                            </Link>
-                                        </h6>
-                                    </div>
-                                    <ul className="media-post">
-                                        <li>
-                                            <Link to="/blog-details">
-                                                <i className="fa fa-calendar"></i>
-                                                May 14 2021
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div className="widget-post clearfix">
-                                <div className="ttr-post-media">
-                                    {" "}
-                                    <img
-                                        src={blogPic3}
-                                        width="200"
-                                        height="160"
-                                        alt=""
-                                    />{" "}
-                                </div>
-                                <div className="ttr-post-info">
-                                    <div className="ttr-post-header">
-                                        <h6 className="post-title">
-                                            <Link to="/blog-details">
-                                                Eliminate Your Fears And Doubts
-                                                About Education.
-                                            </Link>
-                                        </h6>
-                                    </div>
-                                    <ul className="media-post">
-                                        <li>
-                                            <Link to="/blog-details">
-                                                <i className="fa fa-calendar"></i>
-                                                June 12 2021
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="widget widget_tag_cloud">
-                        <h6 className="widget-title">Tags</h6>
-                        <div className="tagcloud">
-                            <Link to="#">Design</Link>
-                            <Link to="#">User interface</Link>
-                            <Link to="#">SEO</Link>
-                            <Link to="#">WordPress</Link>
-                            <Link to="#">Development</Link>
-                            <Link to="#">Joomla</Link>
-                            <Link to="#">Design</Link>
-                            <Link to="#">User interface</Link>
-                            <Link to="#">SEO</Link>
-                            <Link to="#">WordPress</Link>
-                            <Link to="#">Development</Link>
-                            <Link to="#">Joomla</Link>
-                            <Link to="#">Design</Link>
-                            <Link to="#">User interface</Link>
-                            <Link to="#">SEO</Link>
-                            <Link to="#">WordPress</Link>
-                            <Link to="#">Development</Link>
-                            <Link to="#">Joomla</Link>
-                        </div>
-                    </div>
-                </aside>
-            </>
-        );
+    const handleSearch = (e) => {
+        e.preventDefault();
+        dispatch(setSearch(searchBlog));
+        history.push("/blog");
     }
+
+    const getListCategory = async () => {
+        try {
+            const response = await userApi.getListCategoryPost();
+            setListCategory(response);
+        } catch (responseError) {
+            console.log(responseError);
+        }
+    };
+
+    const getListPost = async () => {
+		try {
+			const response = await userApi.getAllPost();
+            const reversed = response.slice().reverse();
+            let recent = [];
+            for(let i=0; i <=2; i++){
+                recent.push(reversed[i]);
+            }
+            setRecentBlog(recent.filter(rec=>rec!==undefined));
+		} catch (responseError) {
+			console.log(responseError);
+		}
+	};
+
+    useEffect(() => {
+        getListCategory();
+        getListPost();
+    }, [])
+
+    return (
+        <>
+            <aside className="side-bar sticky-top">
+                <div className="widget">
+                    <h6 className="widget-title">Search</h6>
+                    <div className="search-bx style-1">
+                        <form role="search">
+                            <div className="input-group">
+                                <input
+                                    name="text"
+                                    className="form-control"
+                                    placeholder="Enter your keywords..."
+                                    type="text"
+                                    onChange={(e) => setSearchBlog(e.target.value)}
+                                />
+                                <span className="input-group-btn">
+                                    <button type="submit" className="btn"
+                                        onClick={(e) => handleSearch(e)}
+                                    >
+                                        <i className="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div className="widget widget_archive">
+                    <h5 className="widget-title">List of Blogs</h5>
+                    <ul>
+                        <li className="active"><Link to="#">General</Link></li>
+                        {
+                            listCategory.map(category => {
+                                return (<li><Link to="/courses-details">{category.setting_title}</Link></li>)
+                            })
+                        }
+                    </ul>
+                </div>
+                <div className="widget recent-posts-entry">
+                    <h6 className="widget-title">Recent Posts</h6>
+                    <div className="widget-post-bx">
+                        {recentBlog.map(blog => {
+                            return (
+                                <div className="widget-post clearfix">
+                                    <div className="ttr-post-media">
+                                        {" "}
+                                        <img
+                                            src={blog?.thumnailUrl}
+                                            width="200"
+                                            height="143"
+                                            alt=""
+                                        />{" "}
+                                    </div>
+                                    <div className="ttr-post-info">
+                                        <div className="ttr-post-header">
+                                            <h6 className="post-title">
+                                                <Link to={`/blog/${blog?.id}`}>
+                                                    {blog?.title}
+                                                </Link>
+                                            </h6>
+                                        </div>
+                                        <ul className="media-post">
+                                            <li>
+                                                <Link to={`/blog/${blog?.id}`}>
+                                                    <i className="fa fa-calendar"></i>
+                                                    {new Date(blog?.createDate).toLocaleDateString()}
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+                <div className="widget widget_tag_cloud">
+                    <h6 className="widget-title">Tags</h6>
+                    <div className="tagcloud">
+                        <Link to="#">Design</Link>
+                        <Link to="#">User interface</Link>
+                        <Link to="#">SEO</Link>
+                        <Link to="#">WordPress</Link>
+                        <Link to="#">Development</Link>
+                        <Link to="#">Joomla</Link>
+                        <Link to="#">Design</Link>
+                        <Link to="#">User interface</Link>
+                        <Link to="#">SEO</Link>
+                        <Link to="#">WordPress</Link>
+                        <Link to="#">Development</Link>
+                        <Link to="#">Joomla</Link>
+                        <Link to="#">Design</Link>
+                        <Link to="#">User interface</Link>
+                        <Link to="#">SEO</Link>
+                        <Link to="#">WordPress</Link>
+                        <Link to="#">Development</Link>
+                        <Link to="#">Joomla</Link>
+                    </div>
+                </div>
+            </aside>
+        </>
+    );
 }
 
 export default BlogAside;

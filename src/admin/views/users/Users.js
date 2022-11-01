@@ -12,6 +12,10 @@ import {
   CFormSelect,
 } from "@coreui/react";
 import { useHistory } from "react-router-dom";
+import CIcon from "@coreui/icons-react";
+import { cilPen } from "@coreui/icons";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const Users = () => {
   const [active, setActive] = useState();
@@ -96,13 +100,13 @@ const Users = () => {
             style={{ width: "100px" }}
             color="primary"
           >
-            Edit
+            <CIcon icon={cilPen} />
           </CButton>
           <div className="p-1"></div>
           <CButton
             color="warning"
             style={{ width: "100px" }}
-            onClick={() => handleUpdateActiveUser(row)}
+            onClick={() => submit(row)}
           >
             {row?.active ? "Deactive" : "Active"}
           </CButton>
@@ -110,26 +114,37 @@ const Users = () => {
       ),
     },
   ];
+  const [listRole, setListRole] = useState([]);
   const [listUser, setListUser] = useState([]);
   const [isModify, setIsModify] = useState(false);
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("");
-  const [size, setSize] = useState(10);
   const [name, setName] = useState("");
+
   const getListUser = async () => {
     try {
-      const response = await adminApi.getListUser(name, status, role, size);
+      const response = await adminApi.getListUser(name, status, role, 100);
       setListUser(response);
       console.log(response);
     } catch (responseError) {
       console.log(responseError);
     }
   };
-  const handleUpdateActiveUser = async (e) => {
+
+  const getListRole = async () => {
+    try {
+      const response = await adminApi.getListRole();
+      setListRole(response);
+    } catch (responseError) {
+      console.log(responseError);
+    }
+  };
+
+  const handleUpdateActiveUser = async (row) => {
     try {
       const params = {
-        username: e?.username,
-        status: e?.active,
+        username: row?.username,
+        status: row?.active,
       };
       const response = await adminApi.updateActiveUser(params);
       toast.success(response?.message, {
@@ -142,30 +157,44 @@ const Users = () => {
       });
     }
   };
+
+  const submit = (row) => {
+
+    confirmAlert({
+      title: 'Confirm to change status',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleUpdateActiveUser(row)
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    });
+  }
+
+  const onSearch = async (e) => {
+    setName(e.target.value);
+  };
+
   useEffect(() => {
     getListUser();
-  }, [isModify, name, size, status, role]);
-  const onSearchUser = async (e) => {
-    setName(e.target.value)
-    // try {
-    //   const res = await adminApi.getListUser(
-    //     e.target.value,
-    //     status,
-    //     role,
-    //     size
-    //   );
-    //   setListUser(res);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
+  }, [isModify, name, status, role]);
+
+  useEffect(() => {
+    getListRole();
+  }, [])
+
   return (
     <div>
       <AppSidebar />
       <Toaster position="top-center" reverseOrder={false} />
       <div className="wrapper d-flex flex-column min-vh-100 bg-light">
         <AppHeader />
-        <div className={Styles.filters}>
+        {/* <div className={Styles.filters}>
           <div style={{ marginBottom: "10px" }}>Filters</div>
           <div className={Styles.listFilter}>
             <div className={Styles.filterItem}>
@@ -177,62 +206,68 @@ const Users = () => {
                   setRole(e.target.value);
                 }}
               >
-                <option></option>
+                <option value="">All Role</option>
                 <option value="ROLE_ADMIN">ADMIN</option>
                 <option value="ROLE_GUEST">GUEST</option>
                 <option value="ROLE_MANAGER">MANAGER</option>
               </CFormSelect>
             </div>
-            <div className={Styles.filterItem}>
-              <label>Status</label>
-              <CFormSelect
-                aria-label="Default select example"
-                style={{ height: "50px" }}
-                onChange={(e) => {
-                  setStatus(e.target.value);
-                }}
-              >
-                <option value=""></option>
-                <option value={true}>Active</option>
-                <option value={false}>Inactive</option>
-              </CFormSelect>
-            </div>
           </div>
         </div>
+            */}
         <div className={Styles.searchParams}>
           <div className={Styles.showEntry}>
-            <div>Show</div>
             <CFormSelect
               aria-label="Default select example"
-              style={{ height: "35px", margin: "0px 10px" }}
+              style={{ margin: "0px 0px", width: "140px" }}
               onChange={(e) => {
-                setSize(e.target.value)
+                setRole(e.target.value);
               }}
             >
-              <option value=""></option>
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
+              <option value="">All Role</option>
+              {listRole?.map((item, index) => {
+                return (
+                  <option
+                    key={index}
+                    value={item?.setting_value}
+                  >
+                    {item?.setting_value?.replace(
+                      "ROLE_",
+                      ""
+                    )}
+                  </option>
+                );
+              })}
             </CFormSelect>
-            <div>entries</div>
-          </div>
-          <div className={Styles.inputSearch}>
+            <CFormSelect
+              aria-label="Default select example"
+              style={{ margin: "0px 10px", width: "140px" }}
+              onChange={(e) => {
+                setStatus(e.target.value);
+              }}
+            >
+              <option value="">All Status</option>
+              <option value={true}>Active</option>
+              <option value={false}>Inactive</option>
+            </CFormSelect>
             <CFormInput
               type="text"
               id="exampleInputPassword1"
               placeholder="Search..."
-              onChange={onSearchUser}
-              style={{ width: "550px" }}
+              onChange={onSearch}
+              style={{ width: "350px" }}
             />
-            <button style={{ backgroundColor: "#7367f0", border: "none" }}
+          </div>
+          <div className={Styles.inputSearch}>
+            <button
+              style={{ backgroundColor: "#7367f0", border: "none", float: 'right' }}
               onClick={() =>
                 history.push(
                   "/admin/users/create"
                 )
               }
             >
-              Add User
+              Create New User
             </button>
           </div>
         </div>

@@ -14,11 +14,14 @@ import { adminApi } from "../../../api/adminApi";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import { FaDatabase } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
+import CIcon from "@coreui/icons-react";
+import { cilPen } from "@coreui/icons";
 
 function Subjects() {
   const columns = [
     {
       name: "ID",
+      maxWidth: '10px',
       selector: (row) => row.id,
       sortable: true,
     },
@@ -32,11 +35,11 @@ function Subjects() {
       selector: (row) => row.name,
       sortable: true,
     },
-    // {
-    //   name: "Price",
-    //   selector: (row) => row.price,
-    //   sortable: true,
-    // },
+    {
+      name: "Price",
+      selector: (row) => row.price,
+      sortable: true,
+    },
     {
       name: "Manager",
       selector: (row) => (
@@ -54,6 +57,23 @@ function Subjects() {
       sortable: true,
     },
     {
+      name: "Category",
+      maxWidth: '200px',
+      selector: (row) => (
+        <>
+          <div>
+            {listCategory.map((category) => {
+              return category?.setting_id === row.categoryId
+                ? category.setting_title
+                : ""
+            })
+            }
+          </div>
+        </>
+      ),
+      sortable: true,
+    },
+    {
       name: "Status",
       selector: (row) => (
         <div className={`${row?.status ? Styles.active : Styles.inactive}`}>
@@ -66,17 +86,16 @@ function Subjects() {
       name: "Action",
       selector: (row) => (
         <CButton href={`/react/admin/subjects/${row?.id}`} color="primary">
-          Edit
+          <CIcon icon={cilPen} />
         </CButton>
       ),
     },
   ];
   const [listSubject, setListSubject] = useState([]);
-  const [nameSearch, setNameSearch] = useState();
-  const [codeSearch, setCodeSearch] = useState();
+  const [listCategory, setListCategory] = useState([]);
+  const [category, setCategory] = useState("");
   const role = JSON.parse(Cookies.get("user"))?.role;
   const [status, setStatus] = useState('');
-  const [size, setSize] = useState(10);
   const [name, setName] = useState('');
   const history = useHistory();
   const isNotAdmin = role !== "ROLE_ADMIN" ? true : false;
@@ -85,18 +104,36 @@ function Subjects() {
     try {
       const response = await adminApi.getAllSubject(name, status);
       setListSubject(response);
+      console.log(response);
     } catch (responseError) {
       toast.error(responseError?.data.message, {
         duration: 7000,
       });
     }
   };
+
+  const getListCategory = async () => {
+    try {
+      const response = await adminApi.getListCategorySubject();
+      setListCategory(response);
+    } catch (responseError) {
+      toast.error(responseError?.data.message, {
+        duration: 7000,
+      });
+    }
+  };
+
   const onSearch = async (e) => {
     setName(e.target.value);
   };
+
   useEffect(() => {
     getAllSubject();
-  }, [name, status]);
+  }, [name, status, category]);
+
+  useEffect(() => {
+    getListCategory();
+  }, []);
 
   return (
     <div>
@@ -104,36 +141,35 @@ function Subjects() {
       <Toaster position="top-center" reverseOrder={false} />
       <div className="wrapper d-flex flex-column min-vh-100 bg-light">
         <AppHeader />
-
         <div className={Styles.searchParams}>
           <div className={Styles.showEntry}>
-            <div>Show</div>
             <CFormSelect
               aria-label="Default select example"
-              style={{ height: "35px", margin: "0px 10px" }}
+              style={{ margin: "0px 0px", width: "180px" }}
               onChange={(e) => {
-                setSize(e.target.value);
+                setCategory(e.target.value);
               }}
             >
-              <option value=""></option>
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
+              <option value="">All Category</option>
+              {listCategory?.map((item, index) => {
+                return (
+                  <option
+                    key={index}
+                    value={item?.setting_id}
+                  >
+                    {item?.setting_title}
+                  </option>
+                );
+              })}
             </CFormSelect>
-            <div>entries</div>
-          </div>
-          <div className={Styles.inputSearch}>
-            <label>Status</label>
             <CFormSelect
               aria-label="Default select example"
-              style={{ margin: "0px 10px", width: "120px" }}
+              style={{ margin: "0px 10px", width: "140px" }}
               onChange={(e) => {
-                //   dispatch(setValueFilter(e.target.value));
                 setStatus(e.target.value);
               }}
             >
-              <option value=""></option>
+              <option value="">All Status</option>
               <option value={true}>Active</option>
               <option value={false}>Inactive</option>
             </CFormSelect>
@@ -141,10 +177,13 @@ function Subjects() {
               type="text"
               id="exampleInputPassword1"
               placeholder="Search..."
-              style={{ width: "550px" }}
               onChange={onSearch}
+              style={{ width: "350px" }}
             />
-            <button style={{ backgroundColor: "#7367f0", border: "none" }}
+          </div>
+          <div className={Styles.inputSearch}>
+            <button
+              style={{ backgroundColor: "#7367f0", border: "none", float: 'right' }}
               onClick={() =>
                 history.push(
                   "/admin/subjects/create"

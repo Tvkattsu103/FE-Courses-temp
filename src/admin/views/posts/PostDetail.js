@@ -24,14 +24,14 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Cookies from "js-cookie";
 
 function PostDetail(props) {
+    const [listCategory, setListCategory] = useState([]);
     const [post, setPost] = useState();
     const [title, setTitle] = useState();
-    const [category, setCategory] = useState();
+    const [categoryId, setCategoryId] = useState();
     const [status, setStatus] = useState(0);
     const [author, setAuthor] = useState();
     const [content, setContent] = useState();
     const [thumbnailUrl, setThumbnailUrl] = useState();
-    const [hasUpdate, setHasUpdate] = useState(false);
     const [preview, setPreview] = React.useState();
     const location = useLocation();
     const history = useHistory();
@@ -54,12 +54,23 @@ function PostDetail(props) {
         }
     };
 
+    const getListCategory = async () => {
+        try {
+            const response = await adminApi.getListCategoryPost();
+            setListCategory(response);
+        } catch (responseError) {
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
+        }
+    };
+
     const handleUpdatePost = async (e) => {
         console.log(type);
         try {
             const params = {
                 title: title,
-                // category: category,
+                categoryId: categoryId,
                 status: status,
                 author: author,
                 authorId: JSON.parse(Cookies.get("user")).id,
@@ -93,6 +104,7 @@ function PostDetail(props) {
         if (type === 1) {
             getPostById();
         }
+        getListCategory();
     }, []);
 
     const optionStatus = [
@@ -135,13 +147,44 @@ function PostDetail(props) {
                                     <CCol sm={8}>
                                         <div className="mb-3">
                                             <CFormLabel htmlFor="exampleFormControlInput1">
-                                                Category
+                                                Category (
+                                                <span style={{ color: "red" }}>*</span>)
                                             </CFormLabel>
-                                            <CFormSelect id="autoSizingSelect">
-                                                <option>All categories</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                            <CFormSelect
+                                                id="autoSizingSelect"
+                                                onChange={(e) => setCategoryId(e.target.value)}
+                                            >
+                                                <option value="">Select category</option>
+                                                {listCategory?.map((item, index) => {
+                                                    if (type === 1) {
+                                                        return post?.setting_id ===
+                                                            item?.setting_id ? (
+                                                            <option
+                                                                key={index}
+                                                                value={item?.setting_id}
+                                                                selected
+                                                            >
+                                                                {item?.setting_title}
+                                                            </option>
+                                                        ) : (
+                                                            <option
+                                                                key={index}
+                                                                value={item?.setting_id}
+                                                            >
+                                                                {item?.setting_title}
+                                                            </option>
+                                                        );
+                                                    } else {
+                                                        return (
+                                                            <option
+                                                                key={index}
+                                                                value={item?.setting_id}
+                                                            >
+                                                                {item?.setting_title}
+                                                            </option>
+                                                        );
+                                                    }
+                                                })}
                                             </CFormSelect>
                                         </div>
                                         <div className="mb-3">
@@ -183,12 +226,6 @@ function PostDetail(props) {
                                                         );
                                                     }
                                                 })}
-                                                {/* <option>All statuses</option>
-                                                <option value="0">Draft</option>
-                                                <option value="1">Submitted</option>
-                                                <option value="2">Published</option>
-                                                <option value="3">Achieved</option>
-                                                <option value="4">Rejected</option> */}
                                             </CFormSelect>
                                         </div>
                                         <div className="mb-3">
@@ -214,7 +251,6 @@ function PostDetail(props) {
                                             thumbnail
                                             src={!preview ? post?.thumnailUrl ? post?.thumnailUrl : img : preview}
                                             width={400}
-                                            // height={300}
                                             style={{ maxHeight: '240px' }}
                                             onLoad={() => URL.revokeObjectURL(preview)}
                                         />

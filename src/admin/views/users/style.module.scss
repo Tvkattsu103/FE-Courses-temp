@@ -40,9 +40,12 @@
 .inputSearch {
   display: flex;
   align-items: center;
+  label{
+    margin-top: 8px;
+  }
   button {
     height: 100%;
-    width: 120px;
+    width: 200px;
     border-radius: 10px;
     color: white;
     margin-left: 20px;
@@ -68,4 +71,12 @@
   padding: 5px;
   color: #969a9e;
 }
-
+.dropzoneContainer {
+  height: 300;
+  background-color: #efefef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: dashed;
+  border-color: #aaa;
+}

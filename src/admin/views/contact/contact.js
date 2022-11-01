@@ -12,10 +12,11 @@ import {
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import CIcon from "@coreui/icons-react";
 import { cibCcMastercard, cifUs, cilPen, cilPeople } from "@coreui/icons";
-import avatar1 from "../../assets/images/avatars/1.jpg";
 import { Link, useHistory } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import toast, { Toaster } from "react-hot-toast";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const Contact = () => {
     const [listContact, setListContact] = useState([]);
@@ -48,19 +49,23 @@ const Contact = () => {
         }
     };
 
-    const handleDeleteContact = async (e) => {
-        try {
-            const response = await adminApi.deleteContact(e?.id);
-            toast.success(response?.message, {
-                duration: 2000,
-            });
-            setIsModify(!isModify);
-        } catch (responseError) {
-            toast.error(responseError?.data.message, {
-                duration: 7000,
-            });
-        }
-    };
+    const submit = (row) => {
+
+        confirmAlert({
+            title: 'Confirm to change status',
+            message: 'Are you sure to do this.',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => handleUpdateStatus(row)
+                },
+                {
+                    label: 'No',
+                    //onClick: () => alert('Click No')
+                }
+            ]
+        });
+    }
 
     useEffect(() => {
         getListContact();
@@ -154,11 +159,11 @@ const Contact = () => {
                                                 onClick={() =>
                                                     history.push(
                                                         "/admin/contact/" +
-                                                            item?.id
+                                                        item?.id
                                                     )
                                                 }
                                             >
-                                                Edit
+                                                <CIcon icon={cilPen} />
                                             </CButton>
                                         </div>
                                         <div className="mr-2">
@@ -167,7 +172,7 @@ const Contact = () => {
                                                 style={{ width: "135px" }}
                                                 color="warning"
                                                 onClick={() =>
-                                                    handleUpdateStatus(item)
+                                                    submit(item)
                                                 }
                                             >
                                                 {item?.status

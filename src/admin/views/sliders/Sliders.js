@@ -11,6 +11,8 @@ import toast, { Toaster } from "react-hot-toast";
 import DataTable from "react-data-table-component";
 import CIcon from '@coreui/icons-react';
 import { cilPen } from "@coreui/icons";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const Sliders = () => {
     const [listSlider, setListSlider] = useState([]);
@@ -75,7 +77,7 @@ const Sliders = () => {
                             className="mb-2"
                             href={`/react/admin/sliders/${row?.id}`} color="primary"
                         >
-                            <CIcon icon={cilPen}/>
+                            <CIcon icon={cilPen} />
                         </CButton>)
                     })()}
 
@@ -83,7 +85,7 @@ const Sliders = () => {
                     <CButton
                         color={row?.status === 1 ? "danger" : "warning"}
                         onClick={() =>
-                            handleUpdateStatus(row, 1)
+                            submit(row)
                         }
                     >{(() => {
                         if (row?.status === 0) {
@@ -101,7 +103,7 @@ const Sliders = () => {
         },
     ];
 
-    const handleUpdateStatus = async (row, type) => {
+    const handleUpdateStatus = async (row) => {
         let id = row.id;
         let status = row.status;
         let statusChange = -1;
@@ -127,6 +129,24 @@ const Sliders = () => {
                 duration: 7000,
             });
         }
+    }
+
+    const submit = (row) => {
+
+        confirmAlert({
+            title: 'Confirm to change status',
+            message: 'Are you sure to do this.',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => handleUpdateStatus(row)
+                },
+                {
+                    label: 'No',
+                    //onClick: () => alert('Click No')
+                }
+            ]
+        });
     }
 
     const getListSlider = async () => {

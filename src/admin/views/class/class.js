@@ -1,3 +1,5 @@
+import { cilPen } from "@coreui/icons";
+import CIcon from "@coreui/icons-react";
 import { CButton, CFormInput, CFormSelect } from "@coreui/react";
 import Cookies from "js-cookie";
 import React from "react";
@@ -9,6 +11,8 @@ import { useHistory } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import Styles from "./style.module.scss";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 function Class() {
   const columns = [
@@ -45,7 +49,7 @@ function Class() {
     {
       name: "Status",
       selector: (row) => (
-        <div className={`${row?.active ? Styles.active : Styles.inactive}`}>
+        <div className={`${row?.status ? Styles.active : Styles.inactive}`}>
           {row.status ? "Active" : "Inactive"}
         </div>
       ),
@@ -55,15 +59,13 @@ function Class() {
       name: "Action",
       selector: (row) => (
         <CButton href={`/react/admin/class/${row?.id}`} color="primary">
-          Edit
+          <CIcon icon={cilPen} />
         </CButton>
       ),
     },
   ];
   const [status, setStatus] = useState("");
-  const [size, setSize] = useState();
   const [listClass, setListClass] = useState([]);
-  const [packages, setPackages] = useState("");
   const [name, setName] = useState("");
   const role = JSON.parse(Cookies.get("user"))?.role;
   const history = useHistory();
@@ -76,9 +78,9 @@ function Class() {
       setListClass(response);
     } catch (responseError) {
       toast.error(responseError?.data.message, {
-          duration: 7000,
+        duration: 7000,
       });
-  }
+    }
   };
   const onSearch = async (e) => {
     setName(e.target.value);
@@ -96,32 +98,14 @@ function Class() {
 
         <div className={Styles.searchParams}>
           <div className={Styles.showEntry}>
-            <div>Show</div>
             <CFormSelect
               aria-label="Default select example"
-              style={{ height: "35px", margin: "0px 10px" }}
-              onChange={(e) => {
-                setSize(e.target.value);
-              }}
-            >
-              <option></option>
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </CFormSelect>
-            <div>entries</div>
-          </div>
-          <div className={Styles.inputSearch}>
-            <label>Status</label>
-            <CFormSelect
-              aria-label="Default select example"
-              style={{ margin: "0px 10px", width: "120px" }}
+              style={{ margin: "0px 10px", width: "140px" }}
               onChange={(e) => {
                 setStatus(e.target.value);
               }}
             >
-              <option value=""></option>
+              <option value="">All Status</option>
               <option value={true}>Active</option>
               <option value={false}>Inactive</option>
             </CFormSelect>
@@ -130,30 +114,22 @@ function Class() {
               id="exampleInputPassword1"
               placeholder="Search..."
               onChange={onSearch}
-              style={{ width: "550px" }}
+              style={{ width: "350px" }}
             />
-            <button style={{ backgroundColor: "#7367f0", border: "none" }}
+          </div>
+          <div className={Styles.inputSearch}>
+            <button
+              style={{ backgroundColor: "#7367f0", border: "none", float: 'right' }}
               onClick={() =>
                 history.push(
-                  "/admin/class/create"
+                  "/admin/posts/create"
                 )
               }
             >
-              Create New Class
+              Create New Post
             </button>
           </div>
         </div>
-        {/* <CInputGroup className="px-3 pb-3 d-flex justify-content-between">
-          <CButton
-            type="button"
-            color="primary"
-            id="button-addon2"
-            disabled={isNotAdminOrManager}
-            href="/react/admin/class/create"
-          >
-            Create New Class
-          </CButton>
-        </CInputGroup> */}
         <div className="body flex-grow-1 px-3">
           <DataTable columns={columns} data={listClass} pagination />
         </div>

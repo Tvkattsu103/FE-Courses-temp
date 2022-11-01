@@ -62,8 +62,8 @@ export const adminApi = {
     const url = `/api/subjects?status=${status}&code=${name}`;
     return axiosApi.get(url);
   },
-  getSubjectDetail: (code) => {
-    const url = `/api/subjects/${code}`;
+  getSubjectDetail: (id) => {
+    const url = `/api/subjects/${id}`;
     return axiosApi.get(url);
   },
   addSubject: (params) => {
@@ -169,5 +169,15 @@ export const adminApi = {
   updateProduct: (id, params) => {
     const url = `/api/package/update?id=${id}`;
     return axiosApi.post(url, params);
+  },
+
+  //List Category
+  getListCategoryPost: () => {
+    const url = `/api/admin/setting/list-category-post`;
+    return axiosApi.get(url);
+  },
+  getListCategorySubject: () => {
+    const url = `/api/admin/setting/list-category-subject`;
+    return axiosApi.get(url);
   },
 };
