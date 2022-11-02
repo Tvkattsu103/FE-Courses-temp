@@ -9,6 +9,7 @@ const Class = React.lazy(() => import("./admin/views/class/class"));
 const Posts = React.lazy(() => import("./admin/views/posts/Posts"));
 const Sliders = React.lazy(() => import("./admin/views/sliders/Sliders"));
 const Products = React.lazy(() => import("./admin/views/products/Products"));
+const Combo = React.lazy(() => import("./admin/views/combo/Combo"));
 
 const routes = [
     { path: "/", exact: true, name: "Home" },
@@ -20,6 +21,7 @@ const routes = [
     { path: "/admin/posts", name: "Posts", element: Posts },
     { path: "/admin/sliders", name: "Sliders", element: Sliders },
     { path: "/admin/products", name: "Products", element: Products },
+    { path: "/admin/combo", name: "Combo", element: Combo },
 ];
 
 export default routes;

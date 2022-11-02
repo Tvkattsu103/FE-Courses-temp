@@ -58,6 +58,8 @@ import Sliders from "../admin/views/sliders/Sliders";
 import SliderDetail from './../admin/views/sliders/SliderDetail';
 import Products from './../admin/views/products/Products';
 import ProductDetail from "../admin/views/products/ProductDetail";
+import Combo from "../admin/views/combo/Combo";
+import ComboDetail from "../admin/views/combo/ComboDetail";
 
 
 class Markup extends Component {
@@ -145,18 +147,24 @@ class Markup extends Component {
                         <PrivateRoute path="/admin/contact/:username" exact>
                             <ContactDetail />
                         </PrivateRoute>
+
+                        {/* Subject */}
                         <PrivateRoute path="/admin/subjects" exact>
                             <Subjects />
                         </PrivateRoute>
                         <PrivateRoute path="/admin/subjects/:id" exact>
                             <SubjectDetail />
                         </PrivateRoute>
+
+                        {/* Class */}
                         <PrivateRoute path="/admin/class" exact>
                             <Class />
                         </PrivateRoute>
                         <PrivateRoute path="/admin/class/:id" exact>
                             <ClassDetail />
                         </PrivateRoute>
+
+                        {/* Post */}
                         <PrivateRoute path="/admin/posts" exact>
                             <Posts />
                         </PrivateRoute>
@@ -166,6 +174,8 @@ class Markup extends Component {
                         <PrivateRoute path="/admin/posts/:id" exact>
                             <PostDetail />
                         </PrivateRoute>
+
+                        {/* Slider */}
                         <PrivateRoute path="/admin/sliders" exact>
                             <Sliders />
                         </PrivateRoute>
@@ -175,6 +185,8 @@ class Markup extends Component {
                         <PrivateRoute path="/admin/sliders/:id" exact>
                             <SliderDetail />
                         </PrivateRoute>
+
+                        {/* Product */}
                         <PrivateRoute path="/admin/products" exact>
                             <Products />
                         </PrivateRoute>
@@ -183,6 +195,17 @@ class Markup extends Component {
                         </PrivateRoute>
                         <PrivateRoute path="/admin/products/:id" exact>
                             <ProductDetail />
+                        </PrivateRoute>
+
+                        {/* Product */}
+                        <PrivateRoute path="/admin/combo" exact>
+                            <Combo />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/combo/create" exact>
+                            <ComboDetail />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/combo/:id" exact>
+                            <ComboDetail />
                         </PrivateRoute>
 
                         <Route path="/error-401" exact component={Error401} />

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
     CButton,
-    CFormSelect,
 } from "@coreui/react";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import { useHistory } from "react-router-dom";
@@ -12,9 +11,8 @@ import DataTable from "react-data-table-component";
 import CIcon from '@coreui/icons-react';
 import { cilPen } from "@coreui/icons";
 
-const Products = () => {
-    const [listProduct, setListProduct] = useState([]);
-    const [status, setStatus] = useState("");
+const Combo = () => {
+    const [listCombo, setListCombo] = useState([]);
     const history = useHistory();
 
     const columns = [
@@ -30,48 +28,8 @@ const Products = () => {
             sortable: true,
         },
         {
-            name: "Excerpt",
-            selector: (row) => row?.excerpt,
-            sortable: true,
-        },
-        {
-            name: "Duration",
-            selector: (row) => row?.duration,
-            sortable: true,
-        },
-        {
             name: "Description",
             selector: (row) => row?.description,
-            sortable: true,
-        },
-        {
-            name: "IsCombo",
-            selector: (row) => (
-                <div className={`${row?.combo ? Styles.active : Styles.inactive}`}>
-                    {row.combo ? "True" : "False"}
-                </div>
-            ),
-            sortable: true,
-        },
-        {
-            name: "Price",
-            selector: (row) => (
-                <>
-                    <span className="strikediag withpadding">{row?.listPrice}</span>
-                    <br/><br/>
-                    <span>{row?.sale_price}</span>
-                </>
-            ),
-            sortable: true,
-        },
-        {
-            name: "Status",
-            maxWidth: '160px',
-            selector: (row) => (
-                <div className={`${row?.status ? Styles.active : Styles.inactive}`}>
-                    {row.status ? "Active" : "Inactive"}
-                </div>
-            ),
             sortable: true,
         },
         {
@@ -81,7 +39,7 @@ const Products = () => {
                 <>
                     {(() => {
                         return (<CButton
-                            href={`/react/admin/products/${row?.id}`} color="primary"
+                            href={`/react/admin/combo/${row?.id}`} color="primary"
                         >
                             <CIcon icon={cilPen} />
                         </CButton>)
@@ -94,10 +52,10 @@ const Products = () => {
         },
     ];
 
-    const getListProduct = async () => {
+    const getListCombo = async () => {
         try {
-            const response = await adminApi.getAllProduct();
-            setListProduct(response);
+            const response = await adminApi.getAllCombo();
+            setListCombo(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -106,8 +64,8 @@ const Products = () => {
     };
 
     useEffect(() => {
-        getListProduct();
-    }, [status]);
+        getListCombo();
+    }, []);
 
     return (
         <div>
@@ -118,33 +76,22 @@ const Products = () => {
 
                 <div className={Styles.searchParams}>
                     <div className={Styles.showEntry}>
-                        <CFormSelect
-                            aria-label="Default select example"
-                            style={{ margin: "0px 10px", width: "140px" }}
-                            onChange={(e) => {
-                                setStatus(e.target.value);
-                            }}
-                        >
-                            <option value="">All Status</option>
-                            <option value={true}>Active</option>
-                            <option value={false}>Inactive</option>
-                        </CFormSelect>
                     </div>
                     <div className={Styles.inputSearch}>
                         <button
                             style={{ backgroundColor: "#7367f0", border: "none", float: 'right' }}
                             onClick={() =>
                                 history.push(
-                                    "/admin/products/create"
+                                    "/admin/combo/create"
                                 )
                             }
                         >
-                            Create New Product
+                            Create New Combo
                         </button>
                     </div>
                 </div>
                 <div className="body flex-grow-1 px-3">
-                    <DataTable columns={columns} data={listProduct} pagination />
+                    <DataTable columns={columns} data={listCombo} pagination />
                 </div>
 
                 <AppFooter />
@@ -153,4 +100,4 @@ const Products = () => {
     );
 };
 
-export default Products;
+export default Combo;

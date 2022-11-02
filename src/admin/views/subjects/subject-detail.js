@@ -330,7 +330,7 @@ function SubjectDetail(props) {
                                                             item?.username ? (
                                                             <option
                                                                 key={index}
-                                                                defaultValue={
+                                                                value={
                                                                     item?.username
                                                                 }
                                                                 selected
@@ -340,7 +340,7 @@ function SubjectDetail(props) {
                                                         ) : (
                                                             <option
                                                                 key={index}
-                                                                defaultValue={
+                                                                value={
                                                                     item?.username
                                                                 }
                                                             >
@@ -351,7 +351,7 @@ function SubjectDetail(props) {
                                                         return (
                                                             <option
                                                                 key={index}
-                                                                defaultValue={
+                                                                value={
                                                                     item?.username
                                                                 }
                                                             >
@@ -382,7 +382,7 @@ function SubjectDetail(props) {
                                                             item?.username ? (
                                                             <option
                                                                 key={index}
-                                                                defaultValue={
+                                                                value={
                                                                     item?.username
                                                                 }
                                                                 selected
@@ -392,7 +392,7 @@ function SubjectDetail(props) {
                                                         ) : (
                                                             <option
                                                                 key={index}
-                                                                defaultValue={
+                                                                value={
                                                                     item?.username
                                                                 }
                                                             >
@@ -403,7 +403,7 @@ function SubjectDetail(props) {
                                                         return (
                                                             <option
                                                                 key={index}
-                                                                defaultValue={
+                                                                value={
                                                                     item?.username
                                                                 }
                                                             >

@@ -7,7 +7,6 @@ import {
     CFormInput,
     CFormLabel,
     CFormSelect,
-    CImage,
     CRow,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
@@ -21,26 +20,43 @@ import {
 } from "../../components";
 
 function ProductDetail(props) {
-    const [slider, setSlider] = useState();
-    const [validTo, setValidTo] = useState();
+    const [product, setProduct] = useState();
+    const [listSubject, setListSubject] = useState();
     const [status, setStatus] = useState(0);
-    const [preview, setPreview] = useState();
-    const [image, setImage] = useState();
+    const [title, setTitle] = useState();
+    const [excerpt, setExcerpt] = useState();
+    const [duration, setDuration] = useState();
+    const [description, setDescription] = useState();
+    const [isCombo, setIsCombo] = useState(0);
+    const [listPrice, setListPrice] = useState();
+    const [salePrice, setSalePrice] = useState();
+    const [subjectId, setSubjectId] = useState();
     const location = useLocation();
     const history = useHistory();
     const id = location.pathname.substring(
-        "/admin/sliders/".length,
+        "/admin/products/".length,
         location.pathname.length
     );
     const type = id !== "create" ? 1 : 0;
-    const img = "https://i.fbcd.co/products/resized/resized-750-500/563d0201e4359c2e890569e254ea14790eb370b71d08b6de5052511cc0352313.jpg";
 
-    const getSliderById = async () => {
+    const getProductById = async () => {
         try {
-            const response = await adminApi.getSliderById(id);
-            setSlider(response);
-            setValidTo(response?.validTo);
+            const response = await adminApi.getProductById(id);
+            setProduct(response);
             setStatus(response.status);
+            setIsCombo(response.combo);
+        } catch (responseError) {
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
+        }
+    };
+
+    const getAllSubject = async () => {
+        try {
+            const response = await adminApi.getAllSubject("", 1);
+            setListSubject(response);
+            console.log(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -49,20 +65,27 @@ function ProductDetail(props) {
     };
 
     const handleUpdateSlider = async () => {
+        console.log(subjectId);
         try {
             const params = {
-                validTo: validTo,
                 status: status,
+                title: title,
+                excerpt: excerpt,
+                duration: duration,
+                description: description,
+                isCombo: isCombo,
+                listPrice: listPrice,
+                salePrice: salePrice,
+                subjectId: subjectId,
             };
-            console.log(image, params);
             const response =
                 type === 1
-                    ? await adminApi.updateSlider(id, image, params)
-                    : await adminApi.createSlider(image, params);
+                    ? await adminApi.updateProduct(id, params)
+                    : await adminApi.createProduct(params);
             toast.success(response?.message, {
                 duration: 2000,
             });
-            history.push("/admin/sliders");
+            history.push("/admin/products");
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -70,23 +93,21 @@ function ProductDetail(props) {
         }
     };
 
-    const handleThumbnail = (e) => {
-        const fileDropped = e.target.files[0];
-        setImage(fileDropped)
-        const previewUrl = URL.createObjectURL(fileDropped);
-        setPreview(previewUrl);
-    }
+    const optionIsCombo = [
+        { combo: false, label: "False" },
+        { combo: true, label: "True" },
+    ];
 
     const optionStatus = [
-        { status: 0, label: "Draft" },
-        { status: 1, label: "Published" },
-        { status: 2, label: "Achieved" },
+        { status: false, label: "Inactive" },
+        { status: true, label: "Active" },
     ];
 
     useEffect(() => {
         if (type === 1) {
-            getSliderById();
+            getProductById(id);
         }
+        getAllSubject();
     }, []);
 
     return (
@@ -99,72 +120,178 @@ function ProductDetail(props) {
                     <CCol xs={12}>
                         <CCard className="mb-4">
                             <CCardHeader>
-                                <strong>Slider Details</strong>
+                                <strong>Product Details</strong>
                             </CCardHeader>
                             <CCardBody>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Image (
-                                        <span style={{ color: "red" }}>*</span>)
-                                    </CFormLabel>
-                                    <br />
-                                    <CImage
-                                        rounded
-                                        thumbnail
-                                        src={!preview ? slider?.imageUrl ? slider?.imageUrl : img : preview}
-                                        width={1200}
-                                        style={{ maxHeight: '450px', display: 'block', margin: 'auto' }}
-                                        onLoad={() => URL.revokeObjectURL(preview)}
-                                    />
-                                    <CFormInput
-                                        className="form-control"
-                                        type="file"
-                                        accept=".jpg, .png, .jpeg"
-                                        onChange={(e) => handleThumbnail(e)}
-                                    />
-                                </div>
                                 <CRow className="g-3 mb-3">
-                                    <CCol sm={4}>
+                                    <CCol sm={6}>
                                         <div className="mb-3">
-                                            <CFormLabel htmlFor="exampleFormControlInput1">
-                                                Valid To (
+                                            <CFormLabel>
+                                                Title (
                                                 <span style={{ color: "red" }}>*</span>)
                                             </CFormLabel>
-                                            {/* <DatePicker selected={validTo} onChange={(date) => setValidTo(new Date(date))} /> */}
                                             <CFormInput
-                                                type="date"
+                                                type="text"
                                                 id="exampleFormControlInput1"
-                                                placeholder=""
-                                                value={
-                                                    validTo
-                                                        ? new Date(
-                                                            validTo
-                                                        ).toLocaleDateString("en-CA")
-                                                        : new Date(
-                                                            ""
-                                                        ).toLocaleDateString("en-CA")
+                                                defaultValue={
+                                                    type === 1 ? product?.title : ""
                                                 }
                                                 onChange={(e) =>
-                                                    setValidTo(
-                                                        new Date(e.target.value)
-                                                    )
+                                                    setTitle(e.target.value)
                                                 }
                                             />
                                         </div>
                                     </CCol>
-                                    <CCol sm={4} className="offset-sm-4">
+                                    <CCol sm={6}>
+                                        <div className="mb-3">
+                                            <CFormLabel>
+                                                Excerpt (
+                                                <span style={{ color: "red" }}>*</span>)
+                                            </CFormLabel>
+                                            <CFormInput
+                                                type="text"
+                                                id="exampleFormControlInput1"
+                                                defaultValue={
+                                                    type === 1 ? product?.excerpt : ""
+                                                }
+                                                onChange={(e) =>
+                                                    setExcerpt(e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                    </CCol>
+                                    <CCol sm={6}>
+                                        <div className="mb-3">
+                                            <CFormLabel>
+                                                Duration (
+                                                <span style={{ color: "red" }}>*</span>)
+                                            </CFormLabel>
+                                            <CFormInput
+                                                type="text"
+                                                id="exampleFormControlInput1"
+                                                defaultValue={
+                                                    type === 1 ? product?.duration : ""
+                                                }
+                                                onChange={(e) =>
+                                                    setDuration(e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                    </CCol>
+                                    <CCol sm={6}>
+                                        <div className="mb-3">
+                                            <CFormLabel>
+                                                Description (
+                                                <span style={{ color: "red" }}>*</span>)
+                                            </CFormLabel>
+                                            <CFormInput
+                                                type="text"
+                                                id="exampleFormControlInput1"
+                                                defaultValue={
+                                                    type === 1 ? product?.description : ""
+                                                }
+                                                onChange={(e) =>
+                                                    setDescription(e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                    </CCol>
+                                    <CCol sm={6}>
+                                        <div className="mb-3">
+                                            <CFormLabel>
+                                                List Price (
+                                                <span style={{ color: "red" }}>*</span>)
+                                            </CFormLabel>
+                                            <CFormInput
+                                                type="text"
+                                                id="exampleFormControlInput1"
+                                                defaultValue={
+                                                    type === 1 ? product?.listPrice : ""
+                                                }
+                                                onChange={(e) =>
+                                                    setListPrice(e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                    </CCol>
+                                    <CCol sm={6}>
+                                        <div className="mb-3">
+                                            <CFormLabel>
+                                                Sale Price (
+                                                <span style={{ color: "red" }}>*</span>)
+                                            </CFormLabel>
+                                            <CFormInput
+                                                type="text"
+                                                id="exampleFormControlInput1"
+                                                defaultValue={
+                                                    type === 1 ? product?.sale_price : ""
+                                                }
+                                                onChange={(e) =>
+                                                    setSalePrice(e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                    </CCol>
+                                    <CCol sm={6}>
                                         <div className="mb-3">
                                             <CFormLabel htmlFor="exampleFormControlInput1">
-                                                Status
+                                                Is Combo (
+                                                <span style={{ color: "red" }}>*</span>)
                                             </CFormLabel>
                                             <CFormSelect
-                                                id="autoSizingSelect"
-                                                onChange={(e) => setStatus(e.target.value)}
-                                                disabled={type !== 1}
+                                                aria-label="Default select example"
+                                                onChange={(e) =>
+                                                    setIsCombo(e.target.value)
+                                                }
+                                            >
+                                                {optionIsCombo?.map((item, index) => {
+                                                    if (type === 1) {
+                                                        return product?.combo ===
+                                                            item?.combo ? (
+                                                            <option
+                                                                key={index}
+                                                                value={item?.combo}
+                                                                selected
+                                                            >
+                                                                {item?.label}
+                                                            </option>
+                                                        ) : (
+                                                            <option
+                                                                key={index}
+                                                                value={item?.combo}
+                                                            >
+                                                                {item?.label}
+                                                            </option>
+                                                        );
+                                                    } else {
+                                                        return (
+                                                            <option
+                                                                key={index}
+                                                                value={item?.combo}
+                                                            >
+                                                                {item?.label}
+                                                            </option>
+                                                        );
+                                                    }
+                                                })}
+                                            </CFormSelect>
+                                        </div>
+                                    </CCol>
+                                    <CCol sm={6}>
+                                        <div className="mb-3">
+                                            <CFormLabel htmlFor="exampleFormControlInput1">
+                                                Status (
+                                                <span style={{ color: "red" }}>*</span>)
+                                            </CFormLabel>
+                                            <CFormSelect
+                                                aria-label="Default select example"
+                                                onChange={(e) =>
+                                                    setStatus(e.target.value)
+                                                }
                                             >
                                                 {optionStatus?.map((item, index) => {
                                                     if (type === 1) {
-                                                        return slider?.status ===
+                                                        return product?.status ===
                                                             item?.status ? (
                                                             <option
                                                                 key={index}
@@ -188,6 +315,57 @@ function ProductDetail(props) {
                                                                 value={item?.status}
                                                             >
                                                                 {item?.label}
+                                                            </option>
+                                                        );
+                                                    }
+                                                })}
+                                            </CFormSelect>
+                                        </div>
+                                    </CCol>
+                                    <CCol sm={6}>
+                                        <div className="mb-3">
+                                            <CFormLabel htmlFor="formFile">
+                                                Subject (
+                                                <span style={{ color: "red" }}>*</span>)
+                                            </CFormLabel>
+                                            <CFormSelect
+                                                aria-label="Default select example"
+                                                onChange={(e) =>
+                                                    setSubjectId(e.target.value)
+                                                }
+                                            >
+                                                <option>Select subject</option>
+                                                {listSubject?.map((item, index) => {
+                                                    if (type === 1) {
+                                                        return product?.subjectId === item?.id ? (
+                                                            <option
+                                                                key={index}
+                                                                value={
+                                                                    item?.id
+                                                                }
+                                                                selected
+                                                            >
+                                                                {item?.name}
+                                                            </option>
+                                                        ) : (
+                                                            <option
+                                                                key={index}
+                                                                value={
+                                                                    item?.id
+                                                                }
+                                                            >
+                                                                {item?.name}
+                                                            </option>
+                                                        );
+                                                    } else {
+                                                        return (
+                                                            <option
+                                                                key={index}
+                                                                value={
+                                                                    item?.id
+                                                                }
+                                                            >
+                                                                {item?.name}
                                                             </option>
                                                         );
                                                     }

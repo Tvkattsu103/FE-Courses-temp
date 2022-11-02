@@ -122,7 +122,7 @@ function Class() {
               style={{ backgroundColor: "#7367f0", border: "none", float: 'right' }}
               onClick={() =>
                 history.push(
-                  "/admin/posts/create"
+                  "/admin/class/create"
                 )
               }
             >

@@ -56,6 +56,12 @@ const _nav = [
         to: "/admin/products",
         icon: <CIcon icon={cilGrid} customClassName="nav-icon" />,
     },
+    {
+        component: CNavItem,
+        name: "Combo",
+        to: "/admin/combo",
+        icon: <CIcon icon={cilGrid} customClassName="nav-icon" />,
+    },
 ];
 
 export default _nav;

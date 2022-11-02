@@ -97,6 +97,7 @@ export const adminApi = {
     return axiosApi.post(url, params);
   },
 
+  //post
   getAllPost: (title, status) => {
     const url = `/api/post?title=${title}&status=${status}`;
     return axiosApi.get(url);
@@ -129,6 +130,7 @@ export const adminApi = {
     });
   },
 
+  //slide
   getAllSlider: (status) => {
     const url = `/api/slide/manage?status=${status}`;
     return axiosApi.get(url);
@@ -162,15 +164,42 @@ export const adminApi = {
     });
   },
 
+  //product
   getAllProduct: () => {
     const url = `/api/package`;
     return axiosApi.get(url);
   },
-  updateProduct: (id, params) => {
-    const url = `/api/package/update?id=${id}`;
+  getProductById: (id) => {
+    const url = `/api/package/${id}`;
+    return axiosApi.get(url);
+  },
+  createProduct: (params) => {
+    const url = "/api/package/create";
     return axiosApi.post(url, params);
   },
+  updateProduct: (id, params) => {
+    const url = `/api/package/update?id=${id}`;
+    return axiosApi.put(url, params);
+  },
 
+  //combo
+  getAllCombo: () => {
+    const url = `/api/combo`;
+    return axiosApi.get(url);
+  },
+  getComboById: (id) => {
+    const url = `/api/combo/${id}`;
+    return axiosApi.get(url);
+  },
+  createCombo: (params) => {
+    const url = "/api/combo/create";
+    return axiosApi.post(url, params);
+  },
+  updateCombo: (id, params) => {
+    const url = `/api/combo/update?id=${id}`;
+    return axiosApi.put(url, params);
+  },
+  
   //List Category
   getListCategoryPost: () => {
     const url = `/api/admin/setting/list-category-post`;
