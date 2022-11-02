@@ -104,7 +104,7 @@ function SliderDetail(props) {
                                 <strong>Slider Details</strong>
                             </CCardHeader>
                             <CCardBody>
-                                <div className="mb-3">
+                                <div className="mb-3"> 
                                     <CFormLabel htmlFor="exampleFormControlInput1">
                                         Image (
                                         <span style={{ color: "red" }}>*</span>)

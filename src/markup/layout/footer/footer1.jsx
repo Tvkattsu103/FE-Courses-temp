@@ -53,9 +53,9 @@ function Footer1(props) {
       setAlertVisible(true);
       setAlertType("success");
     } catch (responseError) {
-      toast.error(responseError?.data.message, {
-        duration: 7000,
-      });
+      setAlertMessage(responseError?.data.message);
+      setAlertVisible(true);
+      setAlertType("danger");
     }
   };
 
