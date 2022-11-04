@@ -55,8 +55,7 @@ function ProductDetail(props) {
     const getAllSubject = async () => {
         try {
             const response = await adminApi.getAllSubject("", 1);
-            setListSubject(response);
-            console.log(response);
+            setListSubject(response.data);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -65,7 +64,6 @@ function ProductDetail(props) {
     };
 
     const handleUpdateSlider = async () => {
-        console.log(subjectId);
         try {
             const params = {
                 status: status,
@@ -99,7 +97,7 @@ function ProductDetail(props) {
     ];
 
     const optionStatus = [
-        { status: false, label: "Inactive" },
+        { status: false, label: "Deactivate" },
         { status: true, label: "Active" },
     ];
 

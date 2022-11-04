@@ -46,8 +46,8 @@ export const userApi = {
     },
 
     //Blog
-    getAllPost: () => {
-        const url = `/api/post/views`;
+    getAllPost: (page, size) => {
+        const url = `/api/post/views?page=${page}&size=${size}`;
         return axiosApi.get(url);
     },
 

@@ -10,7 +10,7 @@ import BlogAside from "../elements/blog-aside";
 
 // Images
 import bannerImg from '../../images/banner/banner1.jpg';
-import { CCard, CRow, CCol, CCardImage, CCardBody, CCardTitle, CCardText } from '@coreui/react';
+import { CRow, CCol, CCardImage, CCardTitle, CCardText } from '@coreui/react';
 import { CButton } from '@coreui/react';
 import { userApi } from './../../api/userApi';
 import ReactHtmlParser from 'react-html-parser'
@@ -18,21 +18,22 @@ import { useSelector } from 'react-redux';
 
 const BlogClassicSidebar = () => {
 	const [listPost, setListPost] = useState([]);
+	const [currentPage, setCurrentPage] = useState(0);
 	const searchBlog = useSelector((state) => state.blogReducers.search);
 
-	const getListPost = async () => {
-		console.log(searchBlog);
+	const getListPost = async (currentPage) => {
 		try {
-			const response = await userApi.getAllPost();
-			setListPost(response.filter(res => res.title.toLowerCase().includes(searchBlog.toLowerCase())));
+			const response = await userApi.getAllPost(currentPage,2);
+			console.log(response);
+			setListPost(response.data.filter(res => res.title.toLowerCase().includes(searchBlog.toLowerCase())));
 		} catch (responseError) {
 			console.log(responseError);
 		}
 	};
 
 	useEffect(() => {
-		getListPost();
-	}, [searchBlog]);
+		getListPost(currentPage);
+	}, [searchBlog, currentPage]);
 
 	return (
 		<>
@@ -77,7 +78,7 @@ const BlogClassicSidebar = () => {
 														<CCardTitle><Link to={`/blog/${item?.id}`}>{item?.title}</Link></CCardTitle>
 														<CCardText>
 															<ul className="media-post">
-																<li><i className="fa fa-calendar"></i>{" " + new Date(item?.createDate).toLocaleDateString()}</li>
+																<li><i className="fa fa-calendar"></i>{" " + new Date(item?.createdDate).toLocaleDateString()}</li>
 																<li><i className="fa fa-user"></i> By {item?.author.fullname}</li>
 															</ul>
 														</CCardText>
@@ -96,9 +97,9 @@ const BlogClassicSidebar = () => {
 											? (<><div className="pagination-bx rounded-sm gray m-b30 clearfix">
 												<ul className="pagination">
 													<li className="previous"><Link to="#"><i className="ti-arrow-left"></i> Prev</Link></li>
-													<li className="active"><Link to="#">1</Link></li>
-													<li><Link to="#">2</Link></li>
-													<li><Link to="#">3</Link></li>
+													<li className="active"><Link onClick={()=>setCurrentPage(0)}>1</Link></li>
+													<li><Link onClick={()=>setCurrentPage(1)}>2</Link></li>
+													<li><Link onClick={()=>setCurrentPage(2)}>3</Link></li>
 													<li className="next"><Link to="#">Next <i className="ti-arrow-right"></i></Link></li>
 												</ul>
 											</div></>)

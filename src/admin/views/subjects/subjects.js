@@ -15,7 +15,9 @@ import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import { FaDatabase } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
-import { cilPen } from "@coreui/icons";
+import { cilLibraryAdd, cilPen } from "@coreui/icons";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 function Subjects() {
   const columns = [
@@ -33,11 +35,6 @@ function Subjects() {
     {
       name: "Name",
       selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: "Price",
-      selector: (row) => row.price,
       sortable: true,
     },
     {
@@ -75,19 +72,35 @@ function Subjects() {
     },
     {
       name: "Status",
+      maxWidth: '120px',
       selector: (row) => (
         <div className={`${row?.status ? Styles.active : Styles.inactive}`}>
-          {row.status ? "Active" : "Inactive"}
+          {row.status ? "Active" : "Deactivate"}
         </div>
       ),
       sortable: true,
     },
     {
       name: "Action",
-      selector: (row) => (
-        <CButton href={`/react/admin/subjects/${row?.id}`} color="primary">
-          <CIcon icon={cilPen} />
-        </CButton>
+      minWidth: '210px',
+      selector: (row, index) => (
+        <div className="my-2 d-flex justify-content-space-between">
+          <CButton
+            href={"/react/admin/subjects/" + row?.id}
+            style={{ width: "auto" }}
+            color="primary"
+          >
+            <CIcon icon={cilPen} />
+          </CButton>
+          <div className="p-1"></div>
+          <CButton
+            color="warning"
+            style={{ width: "auto", textAlign: 'center' }}
+            onClick={() => submit(row)}
+          >
+            {row?.status ? "Deactivate" : "Active"}
+          </CButton>
+        </div>
       ),
     },
   ];
@@ -97,14 +110,50 @@ function Subjects() {
   const role = JSON.parse(Cookies.get("user"))?.role;
   const [status, setStatus] = useState('');
   const [name, setName] = useState('');
+  const [isModify, setIsModify] = useState(false);
   const history = useHistory();
   const isNotAdmin = role !== "ROLE_ADMIN" ? true : false;
 
   const getAllSubject = async () => {
     try {
       const response = await adminApi.getAllSubject(name, status);
-      setListSubject(response);
+      setListSubject(response.data);
       console.log(response);
+    } catch (responseError) {
+      toast.error(responseError?.data.message, {
+        duration: 7000,
+      });
+    }
+  };
+
+  const submit = (row) => {
+
+    confirmAlert({
+      title: 'Confirm to change status',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleUpdateActiveSubject(row)
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    });
+  }
+
+  const handleUpdateActiveSubject = async (row) => {
+    try {
+      const params = {
+        status: !row?.status,
+      };
+      const response = await adminApi.updateSubject(params, row?.id);
+      toast.success(response?.message, {
+        duration: 2000,
+      });
+      setIsModify(!isModify);
     } catch (responseError) {
       toast.error(responseError?.data.message, {
         duration: 7000,
@@ -129,7 +178,7 @@ function Subjects() {
 
   useEffect(() => {
     getAllSubject();
-  }, [name, status, category]);
+  }, [isModify, name, status, category]);
 
   useEffect(() => {
     getListCategory();
@@ -171,7 +220,7 @@ function Subjects() {
             >
               <option value="">All Status</option>
               <option value={true}>Active</option>
-              <option value={false}>Inactive</option>
+              <option value={false}>Deactivate</option>
             </CFormSelect>
             <CFormInput
               type="text"
@@ -190,7 +239,7 @@ function Subjects() {
                 )
               }
             >
-              Create New Subject
+              <CIcon icon={cilLibraryAdd} />
             </button>
           </div>
         </div>

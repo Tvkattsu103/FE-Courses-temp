@@ -117,12 +117,12 @@ function Profile(props) {
                                                                 Courses
                                                             </Nav.Link>
                                                         </Nav.Item>
-                                                        <Nav.Item>
+                                                        {/* <Nav.Item>
                                                             <Nav.Link eventKey="tabTwo">
                                                                 <i className="ti-bookmark-alt"></i>
                                                                 Quiz Results
                                                             </Nav.Link>
-                                                        </Nav.Item>
+                                                        </Nav.Item> */}
                                                         <Nav.Item>
                                                             <Nav.Link eventKey="tabThree">
                                                                 <i className="ti-pencil-alt"></i>

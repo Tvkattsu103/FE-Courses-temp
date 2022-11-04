@@ -28,6 +28,7 @@ function PostDetail(props) {
     const [post, setPost] = useState();
     const [title, setTitle] = useState();
     const [categoryId, setCategoryId] = useState();
+    const [briefInfo, setBriefInfo] = useState();
     const [status, setStatus] = useState(0);
     const [author, setAuthor] = useState();
     const [content, setContent] = useState();
@@ -71,6 +72,7 @@ function PostDetail(props) {
             const params = {
                 title: title,
                 categoryId: categoryId,
+                brefInfo: briefInfo,
                 status: status,
                 author: author,
                 authorId: JSON.parse(Cookies.get("user")).id,
@@ -186,6 +188,21 @@ function PostDetail(props) {
                                                     }
                                                 })}
                                             </CFormSelect>
+                                        </div>
+                                        <div className="mb-3">
+                                            <CFormLabel htmlFor="exampleFormControlInput1">
+                                                Brief info (
+                                                <span style={{ color: "red" }}>*</span>)
+                                            </CFormLabel>
+                                            <CFormInput
+                                                type="title"
+                                                id="exampleFormControlInput1"
+                                                placeholder="Brief info"
+                                                defaultValue={post?.brefInfo}
+                                                onChange={(e) =>
+                                                    setBriefInfo(e.target.value)
+                                                }
+                                            />
                                         </div>
                                         <div className="mb-3">
                                             <CFormLabel htmlFor="exampleFormControlInput1">

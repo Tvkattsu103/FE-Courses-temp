@@ -33,7 +33,7 @@ function BlogAside() {
     const getListPost = async () => {
 		try {
 			const response = await userApi.getAllPost();
-            const reversed = response.slice().reverse();
+            const reversed = response.data.slice().reverse();
             let recent = [];
             for(let i=0; i <=2; i++){
                 recent.push(reversed[i]);

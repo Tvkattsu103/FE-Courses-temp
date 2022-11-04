@@ -10,7 +10,7 @@ import Styles from "./style.module.scss";
 import toast, { Toaster } from "react-hot-toast";
 import DataTable from "react-data-table-component";
 import CIcon from '@coreui/icons-react';
-import { cilPen } from "@coreui/icons";
+import { cilLibraryAdd, cilPen } from "@coreui/icons";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -151,8 +151,8 @@ const Sliders = () => {
 
     const getListSlider = async () => {
         try {
-            const response = await adminApi.getAllSlider(status, validTo);
-            setListSlider(response);
+            const response = await adminApi.getAllSlider(status);
+            setListSlider(response.data);
             console.log(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
@@ -181,7 +181,7 @@ const Sliders = () => {
                                 setStatus(e.target.value);
                             }}
                         >
-                            <option >Status</option>
+                            <option value="">All Status</option>
                             <option value="0">Draft</option>
                             <option value="1">Published</option>
                             <option value="2">Achieved</option>
@@ -196,7 +196,7 @@ const Sliders = () => {
                                 )
                             }
                         >
-                            Create New Slider
+                            <CIcon icon={cilLibraryAdd}/>
                         </button>
                     </div>
                 </div>

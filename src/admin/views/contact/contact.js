@@ -6,12 +6,11 @@ import {
     CTableHeaderCell,
     CTableBody,
     CTableDataCell,
-    CAvatar,
     CButton,
 } from "@coreui/react";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import CIcon from "@coreui/icons-react";
-import { cibCcMastercard, cifUs, cilPen, cilPeople } from "@coreui/icons";
+import { cilPen, cilPeople } from "@coreui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import toast, { Toaster } from "react-hot-toast";
@@ -26,7 +25,8 @@ const Contact = () => {
     const getListContact = async () => {
         try {
             const response = await adminApi.getAllContact();
-            setListContact(Object.values(response));
+            setListContact(Object.values(response.data));
+            console.log(response);
         } catch (responseError) {
             console.log(responseError);
         }
@@ -154,7 +154,7 @@ const Contact = () => {
                                         <div className="mr-2">
                                             <CButton
                                                 className="mb-2"
-                                                style={{ width: "135px" }}
+                                                style={{ width: "auto" }}
                                                 color="primary"
                                                 onClick={() =>
                                                     history.push(

@@ -10,7 +10,7 @@ import Styles from "./style.module.scss";
 import toast, { Toaster } from "react-hot-toast";
 import DataTable from "react-data-table-component";
 import CIcon from '@coreui/icons-react';
-import { cilPen } from "@coreui/icons";
+import { cilLibraryAdd, cilPen } from "@coreui/icons";
 
 const Products = () => {
     const [listProduct, setListProduct] = useState([]);
@@ -57,8 +57,7 @@ const Products = () => {
             name: "Price",
             selector: (row) => (
                 <>
-                    <span className="strikediag withpadding">{row?.listPrice}</span>
-                    <br/><br/>
+                    <span className="strikediag withpadding mr-4">{row?.listPrice}</span>
                     <span>{row?.sale_price}</span>
                 </>
             ),
@@ -69,7 +68,7 @@ const Products = () => {
             maxWidth: '160px',
             selector: (row) => (
                 <div className={`${row?.status ? Styles.active : Styles.inactive}`}>
-                    {row.status ? "Active" : "Inactive"}
+                    {row.status ? "Active" : "Deactivate"}
                 </div>
             ),
             sortable: true,
@@ -127,7 +126,7 @@ const Products = () => {
                         >
                             <option value="">All Status</option>
                             <option value={true}>Active</option>
-                            <option value={false}>Inactive</option>
+                            <option value={false}>Deactivate</option>
                         </CFormSelect>
                     </div>
                     <div className={Styles.inputSearch}>
@@ -139,7 +138,7 @@ const Products = () => {
                                 )
                             }
                         >
-                            Create New Product
+                            <CIcon icon={cilLibraryAdd}/>
                         </button>
                     </div>
                 </div>

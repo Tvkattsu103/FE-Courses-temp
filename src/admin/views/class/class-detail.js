@@ -42,6 +42,7 @@ function ClassDetail(props) {
             setDateFrom(response?.dateFrom);
             setDateTo(response?.dateTo);
             setStatus(response.status);
+            console.log(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -52,7 +53,7 @@ function ClassDetail(props) {
     const getListTrainer = async () => {
         try {
             const response = await adminApi.getListTrainer();
-            setListTrainer(response);
+            setListTrainer(response.data);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -61,6 +62,7 @@ function ClassDetail(props) {
     };
 
     const handleUpdateSubject = async () => {
+        console.log("update");
         try {
             const params = {
                 packages: packages,
@@ -96,7 +98,7 @@ function ClassDetail(props) {
     useEffect(() => { }, [dateFrom, dateTo]);
 
     const optionStatus = [
-        { status: false, label: "Inactive" },
+        { status: false, label: "Deactivate" },
         { status: true, label: "Active" },
     ];
 
