@@ -216,7 +216,7 @@ function SubjectDetail(props) {
                                                 <option value="">Select category</option>
                                                 {listCategory?.map((item, index) => {
                                                     if (type === 1) {
-                                                        return subject?.setting_id ===
+                                                        return subject?.categoryId ===
                                                             item?.setting_id ? (
                                                             <option
                                                                 key={index}

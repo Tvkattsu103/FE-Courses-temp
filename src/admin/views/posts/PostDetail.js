@@ -48,6 +48,7 @@ function PostDetail(props) {
             const response = await adminApi.getPostById(id);
             setPost(response);
             setStatus(response.status);
+            console.log(response)
         } catch (responseError) {
             toast.error(responseError?.data.message, {
                 duration: 7000,
@@ -159,7 +160,7 @@ function PostDetail(props) {
                                                 <option value="">Select category</option>
                                                 {listCategory?.map((item, index) => {
                                                     if (type === 1) {
-                                                        return post?.setting_id ===
+                                                        return post?.categoryId ===
                                                             item?.setting_id ? (
                                                             <option
                                                                 key={index}

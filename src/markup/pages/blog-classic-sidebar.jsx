@@ -82,7 +82,7 @@ const BlogClassicSidebar = () => {
 															</ul>
 														</CCardText>
 														<CCardText>
-															{ReactHtmlParser(item?.body)}
+															{ReactHtmlParser(item?.brefInfo)}
 														</CCardText>
 														<CButton><Link to={`/blog/${item?.id}`}>Read more</Link></CButton>
 													</CCol>
