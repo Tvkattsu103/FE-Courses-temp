@@ -18,12 +18,11 @@ import { useSelector } from 'react-redux';
 
 const BlogClassicSidebar = () => {
 	const [listPost, setListPost] = useState([]);
-	const [currentPage, setCurrentPage] = useState(0);
 	const searchBlog = useSelector((state) => state.blogReducers.search);
 
-	const getListPost = async (currentPage) => {
+	const getListPost = async () => {
 		try {
-			const response = await userApi.getAllPost(currentPage,2);
+			const response = await userApi.getAllPost();
 			console.log(response);
 			setListPost(response.data.filter(res => res.title.toLowerCase().includes(searchBlog.toLowerCase())));
 		} catch (responseError) {
@@ -32,8 +31,8 @@ const BlogClassicSidebar = () => {
 	};
 
 	useEffect(() => {
-		getListPost(currentPage);
-	}, [searchBlog, currentPage]);
+		getListPost();
+	}, [searchBlog]);
 
 	return (
 		<>
@@ -97,9 +96,9 @@ const BlogClassicSidebar = () => {
 											? (<><div className="pagination-bx rounded-sm gray m-b30 clearfix">
 												<ul className="pagination">
 													<li className="previous"><Link to="#"><i className="ti-arrow-left"></i> Prev</Link></li>
-													<li className="active"><Link onClick={()=>setCurrentPage(0)}>1</Link></li>
-													<li><Link onClick={()=>setCurrentPage(1)}>2</Link></li>
-													<li><Link onClick={()=>setCurrentPage(2)}>3</Link></li>
+													<li className="active"><Link >1</Link></li>
+													<li><Link >2</Link></li>
+													<li><Link >3</Link></li>
 													<li className="next"><Link to="#">Next <i className="ti-arrow-right"></i></Link></li>
 												</ul>
 											</div></>)

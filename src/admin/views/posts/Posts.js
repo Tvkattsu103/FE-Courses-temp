@@ -54,22 +54,6 @@ const Posts = () => {
             sortable: true,
         },
         {
-            name: "Body",
-            selector: (row) => {
-                let brief = row.body;
-                brief = brief.substring(3, brief.indexOf("</p>"));
-                while (brief.search("</") !== -1 || brief.search("<") !== -1) {
-                    brief = brief.replace("</", " ");
-                    brief = brief.replace("<", "");
-                }
-                while (brief.search("strong") !== -1) {
-                    brief = brief.replace("strong>", "");
-                }
-                return brief;
-            },
-            sortable: true,
-        },
-        {
             name: "Category",
             maxWidth: '200px',
             selector: (row) => (

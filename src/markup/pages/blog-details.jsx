@@ -71,7 +71,6 @@ function BlogDetails(prop) {
 										</div>
 										<div className="info-bx">
 											<ul className="media-post">
-												<li><i className="fa fa-calendar"></i>{" "+post?.createDate.substring(0,11)}</li>
 												<li><i className="fa fa-comments-o"></i>10 Comment</li>
 											</ul>
 											<h3 className="post-title">{post?.title}</h3>
