@@ -19,6 +19,8 @@ function Class() {
     {
       name: "ID",
       selector: (row) => row.id,
+      minWidth: '10px',
+      maxWidth: '40px',
       sortable: true,
     },
     {
@@ -126,7 +128,7 @@ function Class() {
                 )
               }
             >
-              <CIcon icon={cilLibraryAdd}/>
+              <CIcon icon={cilLibraryAdd} />
             </button>
           </div>
         </div>

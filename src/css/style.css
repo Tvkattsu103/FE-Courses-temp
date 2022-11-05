@@ -610,6 +610,13 @@
     border-radius: 4px;
     top: 100%;
 }
+.menu-links .nav > li .sub-menu.right {
+    left: 100%;
+    padding-top: 0;
+    top: 0;
+    width: 1030px;
+    right: 0px;
+}
 .menu-links .nav > li .sub-menu li {
     border-bottom: 1px dashed #e4e4e4;
     position: relative;
@@ -4225,7 +4232,7 @@ footer .pt-social-link ul li {
     object-fit: cover;
 }
 .tt-slider .slider-thumb {
-    width: 50%;
+    width: 100%;
     margin: auto;
     height: 350px;
 }
@@ -4625,4 +4632,12 @@ select:focus,
     border-radius: 5px;
     border: 1px solid var(--cui-form-select-border-color, #b1b7c1);
     padding: 10px;
+}
+
+.list-homepage {
+    cursor: pointer;
+}
+.list-homepage:hover {
+    background-color: #6424a0;
+    color: white;
 }

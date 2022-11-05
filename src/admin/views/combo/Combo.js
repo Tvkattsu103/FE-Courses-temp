@@ -19,7 +19,8 @@ const Combo = () => {
         {
             name: "ID",
             selector: (row) => row?.id,
-            maxWidth: '10px',
+            minWidth: '10px',
+            maxWidth: '40px',
             sortable: true,
         },
         {

@@ -23,7 +23,8 @@ function Subjects() {
   const columns = [
     {
       name: "ID",
-      maxWidth: '10px',
+      minWidth: '10px',
+      maxWidth: '40px',
       selector: (row) => row.id,
       sortable: true,
     },

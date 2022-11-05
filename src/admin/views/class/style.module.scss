@@ -72,3 +72,10 @@
     color: #969a9e;
   }
   
+  div[data-column-id="1"] {
+    overflow: visible!important;
+  }
+
+  div[data-column-id="1"] div{
+    overflow: visible!important;
+  }
