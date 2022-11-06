@@ -200,8 +200,8 @@ export const adminApi = {
     return axiosApi.put(url, params);
   },
 
-  getAllSetting: () => {
-    const url = "/api/admin/setting/getListSetting";
+  getAllSetting: (skip, top, type_id, keyword) => {
+    const url = `/api/admin/setting/getListSetting?skip=${skip}&top=${top}&type_id=${type_id}&keyword=${keyword}`;
     return axiosApi.get(url);
   },
   getSettingById: (id) => {

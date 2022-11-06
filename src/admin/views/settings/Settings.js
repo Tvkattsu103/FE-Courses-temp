@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
     CButton,
+    CFormInput,
     CFormSelect,
 } from "@coreui/react";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
@@ -14,7 +15,11 @@ import { cilLibraryAdd, cilPen } from "@coreui/icons";
 
 const Settings = () => {
     const [listSetting, setListSetting] = useState([]);
-    const [status, setStatus] = useState("");
+    const [listType, setListType] = useState([]);
+    const [skip, setSkip] = useState(0);
+    const [top, setTop] = useState(50);
+    const [typeId, setTypeId] = useState(0);
+    const [keyword, setKeyword] = useState("");
     const history = useHistory();
 
     const columns = [
@@ -26,8 +31,8 @@ const Settings = () => {
             sortable: true,
         },
         {
-            name: "Description",
-            selector: (row) => row?.desciption,
+            name: "Title",
+            selector: (row) => row?.setting_title,
             sortable: true,
         },
         {
@@ -36,13 +41,13 @@ const Settings = () => {
             sortable: true,
         },
         {
-            name: "Title",
-            selector: (row) => row?.setting_title,
+            name: "Value",
+            selector: (row) => row?.setting_value,
             sortable: true,
         },
         {
-            name: "Value",
-            selector: (row) => row?.setting_value,
+            name: "Description",
+            selector: (row) => row?.desciption,
             sortable: true,
         },
         {
@@ -77,13 +82,24 @@ const Settings = () => {
 
     const getListSetting = async () => {
         try {
-            // const settingRequest = {
-            //     "type_id": "1",
-            //     "top": 4,
-            //     "skip": 1,
-            // };
-            const response = await adminApi.getAllSetting();
+            const response = await adminApi.getAllSetting(skip, top, typeId, keyword);
             setListSetting(response);
+            console.log(response);
+        } catch (responseError) {
+            toast.error(responseError?.data.message, {
+                duration: 7000,
+            });
+        }
+    };
+
+    const onSearch = (e) => {
+        setKeyword(e.target.value);
+    }
+
+    const getAllType = async () => {
+        try {
+            const response = await adminApi.getListType();
+            setListType(response);
             console.log(response);
         } catch (responseError) {
             toast.error(responseError?.data.message, {
@@ -94,7 +110,11 @@ const Settings = () => {
 
     useEffect(() => {
         getListSetting();
-    }, [status]);
+    }, [typeId, keyword]);
+
+    useEffect(() => {
+        getAllType();
+    }, [])
 
     return (
         <div>
@@ -109,14 +129,30 @@ const Settings = () => {
                             aria-label="Default select example"
                             style={{ margin: "0px 10px", width: "140px" }}
                             onChange={(e) => {
-                                setStatus(e.target.value);
+                                setTypeId(e.target.value);
                             }}
                         >
-                            <option value="">All Status</option>
-                            <option value={true}>Active</option>
-                            <option value={false}>Deactivate</option>
+                            <option value={0}>All Type</option>
+                            {listType?.map((item, index) => {
+                                return (
+                                    <option
+                                        key={index}
+                                        value={item?.type_id}
+                                    >
+                                        {item?.title}
+                                    </option>
+                                );
+                            })}
                         </CFormSelect>
+                        <CFormInput
+                            type="text"
+                            id="exampleInputPassword1"
+                            placeholder="Search..."
+                            onChange={onSearch}
+                            style={{ width: "350px" }}
+                        />
                     </div>
+                    
                     <div className={Styles.inputSearch}>
                         <button
                             style={{ backgroundColor: "#7367f0", border: "none", float: 'right' }}
