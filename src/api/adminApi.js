@@ -199,6 +199,27 @@ export const adminApi = {
     const url = `/api/combo/update?id=${id}`;
     return axiosApi.put(url, params);
   },
+
+  getAllSetting: () => {
+    const url = "/api/admin/setting/getListSetting";
+    return axiosApi.get(url);
+  },
+  getSettingById: (id) => {
+    const url = `/api/admin/setting/getSetting/${id}`;
+    return axiosApi.get(url);
+  },
+  createSetting: (params) => {
+    const url = "/api/admin/setting/addSetting";
+    return axiosApi.post(url, params);
+  },
+  updateSetting: (params) => {
+    const url = `/api/admin/setting/updateSetting`;
+    return axiosApi.put(url, params);
+  },
+  getListType: () => {
+    const url = `/api/admin/setting/getListType`;
+    return axiosApi.get(url);
+  },
   
   //List Category
   getListCategoryPost: () => {

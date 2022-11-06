@@ -60,6 +60,8 @@ import Products from './../admin/views/products/Products';
 import ProductDetail from "../admin/views/products/ProductDetail";
 import Combo from "../admin/views/combo/Combo";
 import ComboDetail from "../admin/views/combo/ComboDetail";
+import Settings from "../admin/views/settings/Settings";
+import SettingDetail from "../admin/views/settings/SettingDetail";
 
 
 class Markup extends Component {
@@ -197,7 +199,7 @@ class Markup extends Component {
                             <ProductDetail />
                         </PrivateRoute>
 
-                        {/* Product */}
+                        {/* Combo */}
                         <PrivateRoute path="/admin/combo" exact>
                             <Combo />
                         </PrivateRoute>
@@ -206,6 +208,17 @@ class Markup extends Component {
                         </PrivateRoute>
                         <PrivateRoute path="/admin/combo/:id" exact>
                             <ComboDetail />
+                        </PrivateRoute>
+
+                        {/* Settings */}
+                        <PrivateRoute path="/admin/settings" exact>
+                            <Settings />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/settings/create" exact>
+                            <SettingDetail />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/settings/:id" exact>
+                            <SettingDetail />
                         </PrivateRoute>
 
                         <Route path="/error-401" exact component={Error401} />
